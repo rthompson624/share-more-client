@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html {
+  height: 100%;
+}
+
+body {
+  font-style: normal;
+  font-variant-ligatures: normal;
+  font-variant-caps: normal;
+  font-variant-numeric: normal;
+  font-variant-east-asian: normal;
+  font-stretch: normal;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  height: 100%;
+}
+
+.page-bar {
+  display: grid;
+  grid-gap: 5px;
+  max-width: 430px;
+}
+
+.page-bar-title {
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  font-size: 20px;
+  font-weight: 700;
+  color: #16A085;
+  text-align: left;
+}
+
+.page-bar-controls {
+  grid-column: 4;
+  text-align: right;
+}
+
+.page-bar-controls > i {
+  padding-left: 15px;
+}
+
+.vertical-spacer {
+  padding-top: 10px;
+}

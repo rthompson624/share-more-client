@@ -1,0 +1,30 @@
+<!-- Sticky Toolbar -->
+<div class="sticky-toolbar">
+  <!-- Header -->
+  <div class="header">
+    <h2>Share More</h2>
+  </div>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <a *ngIf="accessToken$ | async" routerLink="/trips"><mat-icon>flight_takeoff</mat-icon></a>
+    </div>
+    <div class="navbar-right">
+      <a *ngIf="accessToken$ | async" routerLink="/users"><mat-icon>person</mat-icon></a>
+      <a *ngIf="!(accessToken$ | async)" routerLink="/authentication/login" routerLinkActive="active"><mat-icon>power_settings_new</mat-icon></a>
+      <a *ngIf="accessToken$ | async" (click)="onLogout()"><mat-icon>power_settings_new</mat-icon></a>
+    </div>
+  </div>
+  <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+</div>
+
+<!-- Content -->
+<div class="main">
+  <ng-content></ng-content>
+  <div *ngIf="errorMessage$ | async" style="padding-top: 20px">
+    <mat-chip-list>
+      <mat-chip color="accent" selected>Error</mat-chip>
+    </mat-chip-list>
+    <div class="error-message">{{ errorMessage$ | async }}</div>  
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<table *ngIf="trips" mat-table [dataSource]="trips" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let trip"> {{ trip.name }} </td>
+  </ng-container>
+  <ng-container matColumnDef="startDate">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let trip"> {{ dateService.formatDate(trip.startDate) }} </td>
+  </ng-container>
+  <!-- Uncomment line below to display column headings -->
+  <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></tr>
+</table>
+<mat-paginator *ngIf="pageInfo"
+  [length]="pageInfo.total"
+  [pageSize]="pageInfo.limit"
+  [pageIndex]="pageInfo.skip / pageInfo.limit"
+  (page)="onPageEvent($event)">
+</mat-paginator>

@@ -1,0 +1,4 @@
+<app-main-layout>
+  <app-trip-detail [trip]="trip$ | async" (editItem)="editTrip()" (deleteItem)="deleteTrip($event)"></app-trip-detail>
+  <app-trip-log-list-container [trip]="trip$ | async"></app-trip-log-list-container>
+</app-main-layout>

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Edit Profile</h2>
+<mat-dialog-content [formGroup]="userForm">
+  <mat-form-field class="app-ctrl-full-width">
+    <input matInput placeholder="First Name" formControlName="firstName" width="100%">
+  </mat-form-field>
+  <br />
+  <mat-form-field class="app-ctrl-full-width">
+    <input matInput placeholder="Last Name" formControlName="lastName" width="100%">
+  </mat-form-field>
+  <br />
+  <a *ngIf="(imgUrl | async) && !isUploading" (click)="selectFile()">
+    <img [src]="imgUrl | async" style="margin: 5px 2px 5px 2px; width: 98%">
+  </a>
+  <a *ngIf="!(imgUrl | async) && !isUploading" (click)="selectFile()">
+    <div>
+      <mat-icon>add_photo_alternate</mat-icon><span style="display: inline-block; vertical-align: top; margin: 10px 0 0 15px">Upload Photo</span>
+    </div>
+  </a>
+  <input type="file" #fileControl style="display: none" (change)="onFileSelected()" />
+  <div *ngIf="isUploading" style="display: flex; justify-content: center; margin: 30px 0 30px 0">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="uploadError">
+    <p style="color: red">Woops. There was an error attempting to upload your pic...</p>
+    <p style="color: red; font-style: italic">{{ uploadError }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+  <button class="mat-raised-button mat-primary" (click)="save()" [disabled]="!userForm.valid">Save</button>
+</mat-dialog-actions>

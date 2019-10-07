@@ -1,19 +1,19 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { TripStoreSelectors } from './trip-store';
+import { ItemStoreSelectors } from './item-store';
 import { AuthenticationStoreSelectors } from './authentication-store';
 
 export const selectError: MemoizedSelector<object, string> = createSelector(
-  TripStoreSelectors.selectTripError,
+  ItemStoreSelectors.selectItemError,
   AuthenticationStoreSelectors.selectError,
-  (trip: string, authentication: string) => {
-    return trip || authentication;
+  (item: string, authentication: string) => {
+    return item || authentication;
   }
 );
 
 export const selectIsLoading: MemoizedSelector<object, boolean> = createSelector(
-  TripStoreSelectors.selectTripIsLoading,
+  ItemStoreSelectors.selectItemIsLoading,
   AuthenticationStoreSelectors.selectIsLoading,
-  (trip: boolean, authentication: boolean) => {
-    return trip || authentication;
+  (item: boolean, authentication: boolean) => {
+    return item || authentication;
   }
 );

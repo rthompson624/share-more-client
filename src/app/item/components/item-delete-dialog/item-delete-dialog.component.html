@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Delete</h2>
+<mat-dialog-content>
+  <p>Please confirm that you would like to delete the following item:</p>
+  <p style="font-weight: 700">{{ item.name }}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+  <button class="mat-raised-button mat-primary" (click)="delete()">Delete</button>
+</mat-dialog-actions>

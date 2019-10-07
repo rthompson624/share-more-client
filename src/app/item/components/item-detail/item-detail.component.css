@@ -1,0 +1,8 @@
+.item-field {
+  color: gray;
+  font-size: 14px;
+}
+
+i:hover {
+  cursor: pointer;
+}

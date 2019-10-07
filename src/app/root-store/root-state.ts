@@ -1,9 +1,7 @@
-import { TripStoreState } from './trip-store';
-import { TripLogStoreState } from './trip-log-store';
+import { ItemStoreState } from './item-store';
 import { AuthenticationStoreState } from './authentication-store';
 
 export interface State {
-  trip: TripStoreState.State;
-  triplog: TripLogStoreState.State;
+  item: ItemStoreState.State;
   authentication: AuthenticationStoreState.State;
 }

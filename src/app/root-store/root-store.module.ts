@@ -4,16 +4,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { TripStoreModule } from './trip-store/trip-store.module';
-import { TripLogStoreModule } from './trip-log-store/trip-log-store.module';
+import { ItemStoreModule } from './item-store/item-store.module';
 import { AuthenticationStoreModule } from './authentication-store/authentication-store.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({
   imports: [
     CommonModule,
-    TripStoreModule,
-    TripLogStoreModule,
+    ItemStoreModule,
     StoreModule.forRoot({ routerReducer: routerReducer }),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([]),

@@ -1,0 +1,10 @@
+<ng-container *ngIf="item">
+  <div class="page-bar">
+    <div class="page-bar-title">{{ item.name }}</div>
+    <div class="page-bar-controls">
+      <i class="material-icons" (click)="onClickEdit()">edit</i>
+      <i class="material-icons" (click)="onClickDelete()">delete</i>
+    </div>
+  </div>
+  <div class="item-field">{{ item.description }}</div> 
+</ng-container>

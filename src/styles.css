@@ -20,7 +20,7 @@ body {
 .page-bar {
   display: grid;
   grid-gap: 5px;
-  max-width: 430px;
+  max-width: 400px;
 }
 
 .page-bar-title {

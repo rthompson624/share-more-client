@@ -14,8 +14,8 @@ const routes: Routes = [
     loadChildren: './authentication/authentication.module#AuthenticationModule'
   },
   {
-    path: 'trips',
-    loadChildren: './trip/trip.module#TripModule'
+    path: 'items',
+    loadChildren: './item/item.module#ItemModule'
   },
   {
     path: 'users',

@@ -12,14 +12,24 @@ export class FileUploadService {
   constructor(private httpClient: HttpClient) {
   }
 
-  upload(file: File, userId: string): Observable<FileUploadResponse> {
+  uploadProfilePic(file: File, userId: string): Observable<FileUploadResponse> {
     const formData: FormData = new FormData();
     formData.append('image', file, file.name);
-    return this.httpClient.post<FileUploadResponse>(this.getUrl(userId), formData);
+    return this.httpClient.post<FileUploadResponse>(this.getProfilePicUploadUrl(userId), formData);
   }
 
-  private getUrl(userId: string): string {
-    return '/' + 'image-upload' + '/' + userId;
+  uploadItemPic(file: File): Observable<FileUploadResponse> {
+    const formData: FormData = new FormData();
+    formData.append('image', file, file.name);
+    return this.httpClient.post<FileUploadResponse>(this.getItemPicUploadUrl(), formData);
+  }
+
+  private getProfilePicUploadUrl(userId: string): string {
+    return '/' + 'profile-image-upload' + '/' + userId;
+  }
+
+  private getItemPicUploadUrl(): string {
+    return '/' + 'item-image-upload';
   }
 
 }

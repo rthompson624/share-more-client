@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
@@ -7,48 +6,42 @@ import { Observable } from 'rxjs';
 
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { MediaService } from '../../../core/services/media.service'
-import { User } from '../../../core/models/user.model';
+import { Item } from '../../../core/models/item.model';
 
 @Component({
-  selector: 'app-user-editor-dialog',
+  selector: 'app-item-editor',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './user-editor-dialog.component.html',
-  styleUrls: ['./user-editor-dialog.component.css']
+  templateUrl: './item-editor.component.html',
+  styleUrls: ['./item-editor.component.css']
 })
-export class UserEditorDialogComponent implements OnInit {
-  user: User;
-  userForm: FormGroup;
+export class ItemEditorComponent implements OnInit {
+  @Input() item: Item;
+  @Output() itemSave = new EventEmitter<Item>();
+  itemForm: FormGroup;
   @ViewChild('fileControl') fileControl: ElementRef;
   isUploading: boolean = false;
   imgUrl: Observable<SafeUrl>;
   uploadError: string;
 
   constructor(
-    private dialogRef: MatDialogRef<UserEditorDialogComponent>,
-    private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private uploadService: FileUploadService,
     public mediaService: MediaService,
-    @Inject(MAT_DIALOG_DATA) data
+    private fb: FormBuilder
   ) {
-    this.user = data;
   }
 
   ngOnInit() {
     this.buildForm();
-    if (this.user.avatarUrl) {
-      this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
+    if (this.item.picUrl) {
+      this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
     }
   }
 
-  save() {
-    this.user.firstName = this.userForm.controls['firstName'].value;
-    this.user.lastName = this.userForm.controls['lastName'].value;
-    this.dialogRef.close(this.user);
-  }
-
-  cancel() {
-    this.dialogRef.close();
+  onSubmit(): void {
+    this.item.name = this.itemForm.controls['name'].value;
+    this.item.description = this.itemForm.controls['description'].value;
+    this.itemSave.emit(this.item);
   }
 
   selectFile(): void {
@@ -61,9 +54,9 @@ export class UserEditorDialogComponent implements OnInit {
     const files: FileList = this.fileControl.nativeElement.files;
     if (files.length > 0) {
       const file = files[0];
-      this.uploadService.uploadProfilePic(file, this.user._id).pipe(take(1)).subscribe(response => {
-        this.user.avatarUrl = response.file;
-        this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
+      this.uploadService.uploadItemPic(file).pipe(take(1)).subscribe(response => {
+        this.item.picUrl = response.file;
+        this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
         this.isUploading = false;
         this.changeDetectorRef.detectChanges();
       }, error => {
@@ -75,10 +68,12 @@ export class UserEditorDialogComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.userForm = this.fb.group({
-      firstName: [this.user.firstName, [Validators.required]],
-      lastName: [this.user.lastName, [Validators.required]]
-    });
+    this.itemForm = this.fb.group(
+      {
+        name: [this.item.name, [Validators.required]],
+        description: [this.item.description, [Validators.required]]
+      }
+    );
   }
 
   private formatError(error: any): string {

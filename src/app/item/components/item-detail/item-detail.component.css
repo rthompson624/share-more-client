@@ -1,8 +1,18 @@
-.item-field {
+.item-container {
+  max-width: 400px;
+  margin-top: 5px;
+}
+
+.item-description {
   color: gray;
   font-size: 14px;
 }
 
 i:hover {
   cursor: pointer;
+}
+
+.item-image {
+  width: 100%;
+  margin-top: 10px;
 }

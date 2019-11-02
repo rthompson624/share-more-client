@@ -6,5 +6,8 @@
       <i class="material-icons" (click)="onClickDelete()">delete</i>
     </div>
   </div>
-  <div class="item-field">{{ item.description }}</div> 
+  <div class="item-container">
+    <div class="item-description">{{ item.description }}</div>
+    <img mat-card-image [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
+  </div>
 </ng-container>

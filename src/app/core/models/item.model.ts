@@ -3,6 +3,7 @@ export interface Item {
   ownerId?: string;
   name?: string;
   description?: string;
+  picUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }

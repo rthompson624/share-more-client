@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Item } from '../../../core/models/item.model';
 import { ItemDeleteDialogComponent } from '../item-delete-dialog/item-delete-dialog.component';
 import { DateService } from '../../../core/services/date.service';
+import { MediaService } from '../../../core/services/media.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -21,7 +22,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    public dateService: DateService
+    public dateService: DateService,
+    public mediaService: MediaService
   ) {
   }
 

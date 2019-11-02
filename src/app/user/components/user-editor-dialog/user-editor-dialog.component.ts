@@ -32,13 +32,13 @@ export class UserEditorDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data
   ) {
     this.user = data;
-    if (this.user.avatarUrl) {
-      this.imgUrl = this.mediaService.getImageUrl(this.user._id, this.user.avatarUrl, 'profile');
-    }
   }
 
   ngOnInit() {
     this.buildForm();
+    if (this.user.avatarUrl) {
+      this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
+    }
   }
 
   save() {
@@ -61,9 +61,9 @@ export class UserEditorDialogComponent implements OnInit {
     const files: FileList = this.fileControl.nativeElement.files;
     if (files.length > 0) {
       const file = files[0];
-      this.uploadService.upload(file, this.user._id).pipe(take(1)).subscribe(response => {
+      this.uploadService.uploadProfilePic(file, this.user._id).pipe(take(1)).subscribe(response => {
         this.user.avatarUrl = response.file;
-        this.imgUrl = this.mediaService.getImageUrl(this.user._id, this.user.avatarUrl, 'profile');
+        this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
         this.isUploading = false;
         this.changeDetectorRef.detectChanges();
       }, error => {

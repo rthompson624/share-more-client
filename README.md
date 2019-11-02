@@ -24,4 +24,4 @@ npm run start
 npm run build-dev-watch
 ```
 
-Access application at [Share More](http://localhost:4300)
+Access application at [Share More](http://localhost:4300) http://localhost:4300.

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { User } from '../../../core/models/user.model';
 export class UserEditorDialogComponent implements OnInit {
   user: User;
   userForm: FormGroup;
-  @ViewChild('fileControl') fileControl: ElementRef;
+  @ViewChild('fileControl', { static: true }) fileControl: ElementRef;
   isUploading: boolean = false;
   imgUrl: Observable<SafeUrl>;
   uploadError: string;

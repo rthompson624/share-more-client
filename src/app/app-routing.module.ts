@@ -11,15 +11,15 @@ const routes: Routes = [
   },
   {
     path: 'authentication',
-    loadChildren: './authentication/authentication.module#AuthenticationModule'
+    loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
     path: 'items',
-    loadChildren: './item/item.module#ItemModule'
+    loadChildren: () => import('./item/item.module').then(m => m.ItemModule)
   },
   {
     path: 'users',
-    loadChildren: './user/user.module#UserModule'
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },
   {
     path: '**',

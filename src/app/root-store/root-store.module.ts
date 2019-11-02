@@ -12,7 +12,15 @@ import { environment } from '../../environments/environment';
   imports: [
     CommonModule,
     ItemStoreModule,
-    StoreModule.forRoot({ routerReducer: routerReducer }),
+    StoreModule.forRoot(
+      { routerReducer: routerReducer },
+      { runtimeChecks:
+        {
+          strictStateImmutability: true,
+          strictActionImmutability: true
+        }
+      }
+    ),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

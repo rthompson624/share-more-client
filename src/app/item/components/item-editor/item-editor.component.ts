@@ -18,7 +18,7 @@ export class ItemEditorComponent implements OnInit {
   @Input() item: Item;
   @Output() itemSave = new EventEmitter<Item>();
   itemForm: FormGroup;
-  @ViewChild('fileControl') fileControl: ElementRef;
+  @ViewChild('fileControl', { static: false }) fileControl: ElementRef;
   isUploading: boolean = false;
   imgUrl: Observable<SafeUrl>;
   uploadError: string;

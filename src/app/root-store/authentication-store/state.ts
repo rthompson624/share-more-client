@@ -12,4 +12,4 @@ export const initialState: State = {
   accessToken: null,
   isLoading: false,
   error: null
-}
+};

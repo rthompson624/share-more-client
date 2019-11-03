@@ -33,7 +33,7 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   selectItem(item: Item): void {
-    this.store$.dispatch(new ItemStoreActions.SelectOneAction(item));
+    this.store$.dispatch(ItemStoreActions.selectOne({ item: item }));
     this.router.navigate([item._id], {relativeTo: this.route});
   }
 
@@ -46,9 +46,7 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   private loadItems(pageIndex: number): void {
-    this.store$.dispatch(
-      new ItemStoreActions.LoadManyAction({pageIndex: pageIndex})
-    );
+    this.store$.dispatch(ItemStoreActions.loadMany({ pageIndex: pageIndex }));
   }
 
 }

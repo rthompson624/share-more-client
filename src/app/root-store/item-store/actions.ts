@@ -1,99 +1,63 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { Item } from '../../core/models/item.model';
-import { Multiple } from '../../core/models/multiple.model';
+import { ApiPage } from '../../core/models/api-page.model';
 
-export enum ActionTypes {
-  LOAD_MANY = '[item] Load many',
-  LOAD_MANY_SUCCESS = '[item] Load many (success)',
-  LOAD_ONE = '[item] Load',
-  LOAD_ONE_SUCCESS = '[item] Load (success)',
-  DELETE = '[item] Delete',
-  DELETE_SUCCESS = '[item] Delete (success)',
-  UPDATE = '[item] Update',
-  UPDATE_SUCCESS = '[item] Update (success)',
-  CREATE = '[item] Create',
-  CREATE_SUCCESS = '[item] Create (success)',
-  FAILURE = '[item] Failure',
-  ROUTE_NAVIGATION = '[item] Route navigation',
-  SELECT_ONE = '[item] Select'
-}
+export const loadMany = createAction(
+  '[Item] Load many',
+  props<{ pageIndex: number }>()
+);
 
-export class LoadManyAction implements Action {
-  readonly type = ActionTypes.LOAD_MANY;
-  constructor(public payload: { pageIndex: number }) {}
-}
+export const loadManySuccess = createAction(
+  '[Item] Load many (success)',
+  props<{ page: ApiPage<Item> }>()
+);
 
-export class LoadManySuccessAction implements Action {
-  readonly type = ActionTypes.LOAD_MANY_SUCCESS;
-  constructor(public payload: Multiple<Item>) {}
-}
+export const loadOne = createAction(
+  '[Item] Load',
+  props<{ id: string }>()
+);
 
-export class LoadOneAction implements Action {
-  readonly type = ActionTypes.LOAD_ONE;
-  constructor(public payload: { id: string }) {}
-}
+export const loadOneSuccess = createAction(
+  '[Item] Load (success)',
+  props<{ item: Item }>()
+);
 
-export class LoadOneSuccessAction implements Action {
-  readonly type = ActionTypes.LOAD_ONE_SUCCESS;
-  constructor(public payload: Item) {}
-}
+export const deleteOne = createAction(
+  '[Item] Delete one',
+  props<{ item: Item }>()
+);
 
-export class DeleteAction implements Action {
-  readonly type = ActionTypes.DELETE;
-  constructor(public payload: Item) {}
-}
+export const deleteOneSuccess = createAction(
+  '[Item] Delete one (success)',
+  props<{ item: Item }>()
+);
 
-export class DeleteSuccessAction implements Action {
-  readonly type = ActionTypes.DELETE_SUCCESS;
-  constructor(public payload: Item) {}
-}
+export const updateOne = createAction(
+  '[Item] Update one',
+  props<{ item: Item }>()
+);
 
-export class UpdateAction implements Action {
-  readonly type = ActionTypes.UPDATE;
-  constructor(public payload: Item) {}
-}
+export const updateOneSuccess = createAction(
+  '[Item] Update one (success)',
+  props<{ item: Item }>()
+);
 
-export class UpdateSuccessAction implements Action {
-  readonly type = ActionTypes.UPDATE_SUCCESS;
-  constructor(public payload: Item) {}
-}
+export const createOne = createAction(
+  '[Item] Create one',
+  props<{ item: Item }>()
+);
 
-export class CreateAction implements Action {
-  readonly type = ActionTypes.CREATE;
-  constructor(public payload: Item) {}
-}
+export const createOneSuccess = createAction(
+  '[Item] Create one (success)',
+  props<{ item: Item }>()
+);
 
-export class CreateSuccessAction implements Action {
-  readonly type = ActionTypes.CREATE_SUCCESS;
-  constructor(public payload: Item) {}
-}
+export const failureAction = createAction(
+  '[Item] Failure',
+  props<{ error: string }>()
+);
 
-export class FailureAction implements Action {
-  readonly type = ActionTypes.FAILURE;
-  constructor(public payload: { error: string }) {}
-}
-
-export class RouteNavigationAction implements Action {
-  readonly type = ActionTypes.ROUTE_NAVIGATION;
-}
-
-export class SelectOneAction implements Action {
-  readonly type = ActionTypes.SELECT_ONE;
-  constructor(public payload: Item) {}
-}
-
-export type Actions = 
-  LoadManyAction|
-  LoadManySuccessAction|
-  LoadOneAction|
-  LoadOneSuccessAction|
-  DeleteAction|
-  DeleteSuccessAction|
-  UpdateAction|
-  UpdateSuccessAction|
-  CreateAction|
-  CreateSuccessAction|
-  FailureAction|
-  RouteNavigationAction|
-  SelectOneAction
-;
+export const selectOne = createAction(
+  '[Item] Select one',
+  props<{ item: Item }>()
+);

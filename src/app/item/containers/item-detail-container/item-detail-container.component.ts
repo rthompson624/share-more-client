@@ -26,7 +26,7 @@ export class ItemDetailContainerComponent implements OnInit {
   ngOnInit() {
     this.item$ = this.route.paramMap.pipe(
       switchMap(paramMap => {
-        this.store$.dispatch(new ItemStoreActions.LoadOneAction({ id: paramMap.get('id')}));
+        this.store$.dispatch(ItemStoreActions.loadOne({ id: paramMap.get('id')}));
         return this.store$.select(ItemStoreSelectors.selectItemById(paramMap.get('id')));
       })
     );
@@ -37,7 +37,7 @@ export class ItemDetailContainerComponent implements OnInit {
   }
 
   deleteItem(item: Item): void {
-    this.store$.dispatch(new ItemStoreActions.DeleteAction(item));
+    this.store$.dispatch(ItemStoreActions.deleteOne({ item: item }));
   }
 
 }

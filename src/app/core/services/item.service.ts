@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Multiple } from '../models/multiple.model';
+import { ApiPage } from '../models/api-page.model';
 import { Item } from '../models/item.model';
 import { ConfigService } from '../services/config.service';
 
@@ -12,8 +12,8 @@ import { ConfigService } from '../services/config.service';
   providedIn: CoreModule
 })
 export class ItemService {
-  private apiEndpoint: string = 'items';
-  private pageSize: number = 8;
+  private apiEndpoint = 'items';
+  private pageSize = 8;
 
   constructor(
     private httpClient: HttpClient,
@@ -47,7 +47,7 @@ export class ItemService {
     }));
   }
 
-  getMany(pageIndex: number, creatorId?: string): Observable<Multiple<Item>> {
+  getMany(pageIndex: number, creatorId?: string): Observable<ApiPage<Item>> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const skip = (pageIndex * this.pageSize);
     let params: HttpParams;
@@ -64,7 +64,7 @@ export class ItemService {
     }
     const options = {headers: headers, params: params};
     return this.configService.getConfig().pipe(switchMap(config => {
-      return this.httpClient.get<Multiple<Item>>(config.apiServer + '/' + this.apiEndpoint, options);
+      return this.httpClient.get<ApiPage<Item>>(config.apiServer + '/' + this.apiEndpoint, options);
     }));
   }
 

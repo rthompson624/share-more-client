@@ -13,14 +13,13 @@ export const selectItemState: MemoizedSelector<object, State> = createFeatureSel
 
 export const selectAllItems: (state: object) => Item[] = featureAdapter.getSelectors(selectItemState).selectAll;
 
-export const selectItemById = (id: string) =>
-  createSelector(selectAllItems, (items: Item[]) => {
-    if (items) {
-      return items.find(item => item._id === id);
-    } else {
-      return null;
-    }
-  });
+export const selectItemById = (id: string) => createSelector(selectAllItems, (items: Item[]) => {
+  if (items) {
+    return items.find(item => item._id === id);
+  } else {
+    return null;
+  }
+});
 
 export const selectItemPage: MemoizedSelector<object, Page> = createSelector(selectItemState, getPage);
 export const selectItemError: MemoizedSelector<object, any> = createSelector(selectItemState, getError);

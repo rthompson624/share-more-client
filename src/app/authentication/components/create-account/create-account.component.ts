@@ -5,7 +5,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { RootStoreState, AuthenticationStoreActions, AuthenticationStoreSelectors } from '../../../root-store';
+import { RootStoreState, AuthenticationStoreActions } from '../../../root-store';
 
 @Component({
   selector: 'app-create-account',
@@ -37,24 +37,28 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     const email = <string>this.accountForm.controls['email'].value;
     const password = <string>this.accountForm.controls['password'].value;
-    this.store$.dispatch(new AuthenticationStoreActions.CreateAccountRequestAction({
-      email: email,
-      password: password
+    this.store$.dispatch(AuthenticationStoreActions.createAccount({
+      user: {
+        email: email,
+        password: password
+      }
     }));
   }
 
   registerListeners(): void {
     // Subscribe to CREATE_ACCOUNT_SUCCESS action
     this.actions$.pipe(
-      ofType<AuthenticationStoreActions.CreateAccountSuccessAction>(AuthenticationStoreActions.ActionTypes.CREATE_ACCOUNT_SUCCESS),
+      ofType(AuthenticationStoreActions.createAccountSuccess),
       takeUntil(this.ngUnsubscribe)
     ).subscribe(() => {
       // Log user in
       const email = <string>this.accountForm.controls['email'].value;
       const password = <string>this.accountForm.controls['password'].value;
-      this.store$.dispatch(new AuthenticationStoreActions.LoginRequestAction({
-        email: email,
-        password: password
+      this.store$.dispatch(AuthenticationStoreActions.login({
+        auth: {
+          username: email,
+          password: password
+        }
       }));
     });
   }
@@ -80,7 +84,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     } else {
       pw2.setErrors(null);
     }
-    return null; 
+    return null;
   }
 
 }

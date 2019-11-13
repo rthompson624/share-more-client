@@ -25,14 +25,14 @@ export class ItemEditContainerComponent implements OnInit {
   ngOnInit() {
     this.item$ = this.route.paramMap.pipe(
       switchMap(paramMap => {
-        this.store$.dispatch(new ItemStoreActions.LoadOneAction({ id: paramMap.get('id')}));
+        this.store$.dispatch(ItemStoreActions.loadOne({ id: paramMap.get('id')}));
         return this.store$.select(ItemStoreSelectors.selectItemById(paramMap.get('id')));
       })
     );
   }
 
   onSave(item: Item): void {
-    this.store$.dispatch(new ItemStoreActions.UpdateAction(item));
+    this.store$.dispatch(ItemStoreActions.updateOne({ item: item }));
   }
 
 }

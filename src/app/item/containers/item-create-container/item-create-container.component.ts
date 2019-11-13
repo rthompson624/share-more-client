@@ -25,7 +25,7 @@ export class ItemCreateContainerComponent implements OnInit {
   }
 
   onSave(item: Item): void {
-    this.store$.dispatch(new ItemStoreActions.CreateAction(item));
+    this.store$.dispatch(ItemStoreActions.createOne({ item: item }));
   }
 
 }

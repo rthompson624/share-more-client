@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 
 import { Item } from '../../../core/models/item.model';
@@ -33,7 +33,7 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   selectItem(item: Item): void {
-    this.store$.dispatch(new ItemStoreActions.SelectOneAction(item));
+    this.store$.dispatch(ItemStoreActions.selectOne({ item: item }));
     this.router.navigate([item._id], {relativeTo: this.route});
   }
 
@@ -46,9 +46,7 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   private loadItems(pageIndex: number): void {
-    this.store$.dispatch(
-      new ItemStoreActions.LoadManyAction({pageIndex: pageIndex})
-    );
+    this.store$.dispatch(ItemStoreActions.loadMany({ pageIndex: pageIndex }));
   }
 
 }

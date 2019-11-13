@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
-import { Observable, of as observableOf } from 'rxjs';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -18,14 +18,11 @@ export class ItemStoreEffects {
     private store$: Store<RootStoreState.State>
   ) {}
 
-  @Effect()
-  loadManyEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LoadManyAction>(
-      featureActions.ActionTypes.LOAD_MANY
-    ),
+  loadMany$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.loadMany),
     withLatestFrom(this.store$),
     switchMap(([action, store]) => {
-      let pageIndex = action.payload.pageIndex;
+      let pageIndex = action.pageIndex;
       // If page index is null use what the store has
       if (pageIndex === null) {
         if (store.item.page.skip) {
@@ -35,143 +32,112 @@ export class ItemStoreEffects {
         }
       }
       return this.dataService.getMany(pageIndex, store.authentication.user._id).pipe(
-        map(response =>
-          new featureActions.LoadManySuccessAction(response)
+        map(page =>
+          featureActions.loadManySuccess({ page: page })
         ),
         catchError(error =>
-          observableOf(new featureActions.FailureAction({ error: this.formatError(error) }))
+          of(featureActions.failureAction({ error: this.formatError(error) }))
         )
-      )
+      );
     })
-  );
-  
-  @Effect()
-  loadOneEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LoadOneAction>(
-      featureActions.ActionTypes.LOAD_ONE
-    ),
+  ));
+
+  loadOne$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.loadOne),
     switchMap(action =>
-      this.dataService.getOne(action.payload.id).pipe(
-        map(response =>
-          new featureActions.LoadOneSuccessAction(response)
+      this.dataService.getOne(action.id).pipe(
+        map(item =>
+          featureActions.loadOneSuccess({ item: item })
         ),
         catchError(error =>
-          observableOf(new featureActions.FailureAction({ error: this.formatError(error) }))
+          of(featureActions.failureAction({ error: this.formatError(error) }))
         )
       )
     )
-  );
+  ));
 
-  @Effect()
-  deleteEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.DeleteAction>(
-      featureActions.ActionTypes.DELETE
-    ),
+  deleteOne$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.deleteOne),
     switchMap(action =>
-      this.dataService.delete(action.payload).pipe(
+      this.dataService.delete(action.item).pipe(
         map(() =>
-          new featureActions.DeleteSuccessAction(action.payload)
+          featureActions.deleteOneSuccess({ item: action.item })
         ),
         catchError(error =>
-          observableOf(new featureActions.FailureAction({ error: this.formatError(error) }))
+          of(featureActions.failureAction({ error: this.formatError(error) }))
         )
       )
     )
-  );
+  ));
 
-  @Effect()
-  deleteSuccessEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.DeleteSuccessAction>(
-      featureActions.ActionTypes.DELETE_SUCCESS
-    ),
-    switchMap(() => {
-      return this.router.navigate(['/items'])
-      .then(() => new featureActions.RouteNavigationAction())
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
-    })
-  );
+  deleteOneSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.deleteOneSuccess),
+    tap(() => this.router.navigate(['/items']))
+  ), { dispatch: false });
 
-  @Effect()
-  updateEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.UpdateAction>(
-      featureActions.ActionTypes.UPDATE
-    ),
+  updateOne$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.updateOne),
     switchMap(action =>
-      this.dataService.update(action.payload).pipe(
-        map(response =>
-          new featureActions.UpdateSuccessAction(response)
+      this.dataService.update(action.item).pipe(
+        map(item =>
+          featureActions.updateOneSuccess({ item: item })
         ),
         catchError(error =>
-          observableOf(new featureActions.FailureAction({ error: this.formatError(error) }))
+          of(featureActions.failureAction({ error: this.formatError(error) }))
         )
       )
     )
-  );
+  ));
 
-  @Effect()
-  updateSuccessEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.UpdateAction>(
-      featureActions.ActionTypes.UPDATE_SUCCESS
-    ),
-    switchMap(action => {
-      return this.router.navigate(['/items', action.payload._id])
-      .then(() => new featureActions.RouteNavigationAction())
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
-    })
-  );
+  updateOneSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.updateOneSuccess),
+    tap(action => this.router.navigate(['/items', action.item._id]))
+  ), { dispatch: false });
 
-  @Effect()
-  createEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.CreateAction>(
-      featureActions.ActionTypes.CREATE
-    ),
+  createOne$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.createOne),
     withLatestFrom(this.store$),
     switchMap(([action, store])  => {
-      action.payload.ownerId = store.authentication.user._id;
-      return this.dataService.create(action.payload).pipe(
-        map(response =>
-          new featureActions.CreateSuccessAction(response)
+      action.item.ownerId = store.authentication.user._id;
+      return this.dataService.create(action.item).pipe(
+        map(item =>
+          featureActions.createOneSuccess({ item: item })
         ),
         catchError(error =>
-          observableOf(new featureActions.FailureAction({ error: this.formatError(error) }))
+          of(featureActions.failureAction({ error: this.formatError(error) }))
         )
-      )
+      );
     })
-  );
+  ));
 
-  @Effect()
-  createSuccessEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.CreateSuccessAction>(
-      featureActions.ActionTypes.CREATE_SUCCESS
-    ),
-    switchMap(action => {
-      return this.router.navigate(['/items', action.payload._id])
-      .then(() => new featureActions.RouteNavigationAction())
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
-    })
-  );
+  createOneSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.createOneSuccess),
+    tap(action => this.router.navigate(['/items', action.item._id]))
+  ), { dispatch: false });
 
-  @Effect({dispatch: false})
-  failureEffect$ = this.actions$.pipe(
-    ofType<featureActions.FailureAction>(
-      featureActions.ActionTypes.FAILURE
-    ),
+  failureEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.failureAction),
     tap(action => {
-      switch (action.payload.error) {
+      switch (action.error) {
         case 'jwt expired':
           this.router.navigate(['/', 'authentication', 'login']);
           break;
         default:
       }
     })
-  );
+  ));
 
   private formatError(error: any): string {
     if (error.error && error.error.message) {
       return error.error.message;
     }
-    if (error.error) return error.error.toString();
-    if (error) return error.toString();
+    if (error.error) {
+      return error.error.toString();
+    }
+    if (error) {
+      return error.toString();
+    }
+    return null;
   }
 
 }

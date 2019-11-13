@@ -26,9 +26,11 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     const email = <string>this.loginForm.controls['email'].value;
     const password = <string>this.loginForm.controls['password'].value;
-    this.store$.dispatch(new AuthenticationStoreActions.LoginRequestAction({
-      email: email,
-      password: password
+    this.store$.dispatch(AuthenticationStoreActions.login({
+      auth: {
+        username: email,
+        password: password
+      }
     }));
   }
 

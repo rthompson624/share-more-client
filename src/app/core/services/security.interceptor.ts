@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { first, switchMap } from 'rxjs/operators';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { RootStoreState } from '../../root-store';
@@ -27,11 +27,16 @@ export class SecurityInterceptor implements HttpInterceptor {
   }
 
   private needsToken(url: string, method: string): boolean {
-    let retVal = true;
-    if (url.toLowerCase().includes('users') && method.toLowerCase().includes('post')) retVal = false;
-    if (url.toLowerCase().includes('auth')) retVal = false;
-    if (url.toLowerCase().includes('config-variables')) retVal = false;
-    return retVal;
+    if (url.toLowerCase().includes('users') && method.toLowerCase().includes('post')) {
+      return false;
+    }
+    if (url.toLowerCase().includes('auth')) {
+      return false;
+    }
+    if (url.toLowerCase().includes('config-variables')) {
+      return false;
+    }
+    return true;
   }
 
 }

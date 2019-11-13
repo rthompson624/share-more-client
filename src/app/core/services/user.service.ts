@@ -11,7 +11,7 @@ import { ConfigService } from '../services/config.service';
   providedIn: CoreModule
 })
 export class UserService {
-  private apiEndpoint: string = 'users';
+  private apiEndpoint = 'users';
 
   constructor(
     private httpClient: HttpClient,
@@ -40,7 +40,10 @@ export class UserService {
       .set('Content-Type', 'application/json');
     const options = {headers: headers};
     return this.configService.getConfig().pipe(switchMap(config => {
-      return this.httpClient.put<User>(config.apiServer + '/' + this.apiEndpoint + '/' + user._id, this.updateableProperties(user), options);
+      return this.httpClient.put<User>(
+        config.apiServer + '/' + this.apiEndpoint + '/' + user._id, this.updateableProperties(user),
+        options
+      );
     }));
   }
 

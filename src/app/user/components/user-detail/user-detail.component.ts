@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -43,7 +43,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (data) {
         this.updateItem.emit(<User>data);
       }
-    });    
+    });
   }
 
 }

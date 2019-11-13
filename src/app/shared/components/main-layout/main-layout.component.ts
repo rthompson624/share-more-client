@@ -29,7 +29,7 @@ export class MainLayoutComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.store$.dispatch(new AuthenticationStoreActions.LogoutRequestAction());
+    this.store$.dispatch(AuthenticationStoreActions.logout());
   }
 
 }

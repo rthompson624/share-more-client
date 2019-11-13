@@ -1,155 +1,89 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { AuthResponse } from '../../core/models/auth-response.model';
+import { AuthRequest } from '../../core/models/auth-request.model';
 import { User } from '../../core/models/user.model';
 
-export enum ActionTypes {
-  CREATE_ACCOUNT_REQUEST = '[authentication] Create account',
-  CREATE_ACCOUNT_FAILURE = '[authentication] Create account (failure)',
-  CREATE_ACCOUNT_SUCCESS = '[authentication] Create account (success)',
-  LOGIN_REQUEST = '[authentication] Login',
-  LOGIN_FAILURE = '[authentication] Login (failure)',
-  LOGIN_SUCCESS = '[authentication] Login (success)',
-  LOGOUT_REQUEST = '[authentication] Logout',
-  LOGOUT_SUCCESS = '[authentication] Logout (success)',
-  RESTORE_AUTHENTICATION_STATE_REQUEST = '[authentication] Restore',
-  RESTORE_AUTHENTICATION_STATE_SUCCESS = '[authentication] Restore (success)',
-  RESTORE_AUTHENTICATION_STATE_FAILURE = '[authentication] Restore (failure)',
-  TOKEN_VALIDATION_SUCCESS = '[authentication] Token validation (success)',
-  TOKEN_VALIDATION_FAILURE = '[authentication] Token validation (failure)',
-  FAILURE = '[authentication] Failure',
-  ROUTE_NAVIGATION = '[authentication] Route navigation',
-  UPDATE_USER_REQUEST = '[authentication] Update user',
-  UPDATE_USER_FAILURE = '[authentication] Update user (failure)',
-  UPDATE_USER_SUCCESS = '[authentication] Update user (success)',
-  LOAD_USER_INFO_REQUEST = '[authentication] Load user info',
-  LOAD_USER_INFO_SUCESS = '[authentication] Load user info (success)',
-  LOAD_USER_INFO_FAILURE = '[authentication] Load user info (failure)'
-}
+export const createAccount = createAction(
+  '[Authentication] Create account',
+  props<{ user: User }>()
+);
 
-export class CreateAccountRequestAction implements Action {
-  readonly type = ActionTypes.CREATE_ACCOUNT_REQUEST;
-  constructor(public payload: { email: string; password: string }) {}
-}
+export const createAccountSuccess = createAction(
+  '[Authentication] Create account (success)',
+  props<{ user: User }>()
+);
 
-export class CreateAccountFailureAction implements Action {
-  readonly type = ActionTypes.CREATE_ACCOUNT_FAILURE;
-  constructor(public payload: { error: string }) {}
-}
+export const createAccountFailure = createAction(
+  '[Authentication] Create account (failure)',
+  props<{ error: string }>()
+);
 
-export class CreateAccountSuccessAction implements Action {
-  readonly type = ActionTypes.CREATE_ACCOUNT_SUCCESS;
-  constructor(public payload: User) {}
-}
+export const login = createAction(
+  '[Authentication] Login',
+  props<{ auth: AuthRequest }>()
+);
 
-export class LoginRequestAction implements Action {
-  readonly type = ActionTypes.LOGIN_REQUEST;
-  constructor(public payload: { email: string; password: string }) {}
-}
+export const loginSuccess = createAction(
+  '[Authentication] Login (success)',
+  props<{ auth: AuthResponse }>()
+);
 
-export class LoginFailureAction implements Action {
-  readonly type = ActionTypes.LOGIN_FAILURE;
-  constructor(public payload: { error: string }) {}
-}
+export const loginFailure = createAction(
+  '[Authentication] Login (failure)',
+  props<{ error: string }>()
+);
 
-export class LoginSuccessAction implements Action {
-  readonly type = ActionTypes.LOGIN_SUCCESS;
-  constructor(public payload: AuthResponse) {}
-}
+export const logout = createAction(
+  '[Authentication] Logout'
+);
 
-export class LogoutRequestAction implements Action {
-  readonly type = ActionTypes.LOGOUT_REQUEST;
-  constructor() {}
-}
+export const restoreAuthenticationState = createAction(
+  '[Authentication] Restore authentication state'
+);
 
-export class LogoutSuccessAction implements Action {
-  readonly type = ActionTypes.LOGOUT_SUCCESS;
-  constructor() {}
-}
+export const restoreAuthenticationStateSuccess = createAction(
+  '[Authentication] Restore authentication state (success)',
+  props<{ user: User; accessToken: string }>()
+);
 
-export class RestoreAuthenticationStateRequestAction implements Action {
-  readonly type = ActionTypes.RESTORE_AUTHENTICATION_STATE_REQUEST;
-  constructor() {}
-}
+export const restoreAuthenticationStateFailure = createAction(
+  '[Authentication] Restore authentication state (failure)'
+);
 
-export class RestoreAuthenticationStateFailureAction implements Action {
-  readonly type = ActionTypes.RESTORE_AUTHENTICATION_STATE_FAILURE;
-  constructor() {}
-}
+export const tokenValidationSuccess = createAction(
+  '[Authentication] Token validation (success)'
+);
 
-export class RestoreAuthenticationStateSuccessAction implements Action {
-  readonly type = ActionTypes.RESTORE_AUTHENTICATION_STATE_SUCCESS;
-  constructor(public payload: { user: User; accessToken: string }) {}
-}
+export const tokenValidationFailure = createAction(
+  '[Authentication] Token validation (failure)'
+);
 
-export class TokenValidationSuccessAction implements Action {
-  readonly type = ActionTypes.TOKEN_VALIDATION_SUCCESS;
-  constructor() {}
-}
+export const updateUser = createAction(
+  '[Authentication] Update user',
+  props<{ user: User }>()
+);
 
-export class TokenValidationFailureAction implements Action {
-  readonly type = ActionTypes.TOKEN_VALIDATION_FAILURE;
-  constructor() {}
-}
+export const updateUserSuccess = createAction(
+  '[Authentication] Update user (success)',
+  props<{ user: User }>()
+);
 
-export class RouteNavigationAction implements Action {
-  readonly type = ActionTypes.ROUTE_NAVIGATION;
-}
+export const updateUserFailure = createAction(
+  '[Authentication] Update user (failure)',
+  props<{ error: string }>()
+);
 
-export class FailureAction implements Action {
-  readonly type = ActionTypes.FAILURE;
-  constructor(public payload: { error: string }) {}
-}
+export const loadUserInfo = createAction(
+  '[Authentication] Load user info',
+  props<{ auth: AuthResponse }>()
+);
 
-export class UpdateUserRequestAction implements Action {
-  readonly type = ActionTypes.UPDATE_USER_REQUEST;
-  constructor(public payload: User) {}
-}
+export const loadUserInfoSuccess = createAction(
+  '[Authentication] Load user info (success)',
+  props<{ user: User }>()
+);
 
-export class UpdateUserFailureAction implements Action {
-  readonly type = ActionTypes.UPDATE_USER_FAILURE;
-  constructor(public payload: { error: string }) {}
-}
-
-export class UpdateUserSuccessAction implements Action {
-  readonly type = ActionTypes.UPDATE_USER_SUCCESS;
-  constructor(public payload: User) {}
-}
-
-export class LoadUserInfoRequestAction implements Action {
-  readonly type = ActionTypes.LOAD_USER_INFO_REQUEST;
-  constructor(public payload: AuthResponse) {}
-}
-
-export class LoadUserInfoFailureAction implements Action {
-  readonly type = ActionTypes.LOAD_USER_INFO_FAILURE;
-  constructor(public payload: { error: string }) {}
-}
-
-export class LoadUserInfoSuccessAction implements Action {
-  readonly type = ActionTypes.LOAD_USER_INFO_SUCESS;
-  constructor(public payload: User) {}
-}
-
-export type Actions = 
-  CreateAccountRequestAction |
-  CreateAccountFailureAction |
-  CreateAccountSuccessAction |
-  LoginRequestAction |
-  LoginFailureAction |
-  LoginSuccessAction |
-  LogoutRequestAction |
-  LogoutSuccessAction |
-  RestoreAuthenticationStateRequestAction |
-  RestoreAuthenticationStateFailureAction |
-  RestoreAuthenticationStateSuccessAction |
-  TokenValidationSuccessAction |
-  TokenValidationFailureAction |
-  RouteNavigationAction |
-  FailureAction |
-  UpdateUserRequestAction |
-  UpdateUserFailureAction |
-  UpdateUserSuccessAction |
-  LoadUserInfoRequestAction |
-  LoadUserInfoFailureAction |
-  LoadUserInfoSuccessAction
-;
+export const loadUserInfoFailure = createAction(
+  '[Authentication] Load user info (failure)',
+  props<{ error: string }>()
+);

@@ -1,129 +1,87 @@
-import { Actions, ActionTypes } from './actions';
-import { initialState, State } from './state';
+import { createReducer, on } from '@ngrx/store';
+import { initialState } from './state';
+import * as AuthenticationStoreActions from './actions';
 
-export function authenticationReducer(state = initialState, action: Actions): State {
-  switch (action.type) {
-    case ActionTypes.CREATE_ACCOUNT_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.CREATE_ACCOUNT_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.CREATE_ACCOUNT_FAILURE:
-      return {
-        ...state,
-        error: action.payload.error,
-        isLoading: false
-      };
-    case ActionTypes.LOGIN_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.LOGIN_SUCCESS:
-      return {
-        ...state,
-        user: { _id: action.payload.user_id },
-        accessToken: action.payload.access_token,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.LOGIN_FAILURE:
-      return {
-        ...state,
-        error: action.payload.error,
-        isLoading: false
-      };
-    case ActionTypes.LOGOUT_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.LOGOUT_SUCCESS:
-      return {
-        ...state,
-        user: null,
-        accessToken: null,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.RESTORE_AUTHENTICATION_STATE_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.RESTORE_AUTHENTICATION_STATE_FAILURE:
-      return {
-        ...state,
-        user: null,
-        accessToken: null,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.RESTORE_AUTHENTICATION_STATE_SUCCESS:
-      return {
-        ...state,
-        user: action.payload.user,
-        accessToken: action.payload.accessToken,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.TOKEN_VALIDATION_SUCCESS:
-      return state;
-    case ActionTypes.TOKEN_VALIDATION_FAILURE:
-      return {
-        ...state,
-        accessToken: null
-      }
-    case ActionTypes.UPDATE_USER_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.UPDATE_USER_SUCCESS:
-      return {
-        ...state,
-        user: action.payload,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.UPDATE_USER_FAILURE:
-      return {
-        ...state,
-        error: action.payload.error,
-        isLoading: false
-      };
-    case ActionTypes.LOAD_USER_INFO_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true
-      };
-    case ActionTypes.LOAD_USER_INFO_SUCESS:
-      return {
-        ...state,
-        user: action.payload,
-        error: null,
-        isLoading: false
-      };
-    case ActionTypes.LOAD_USER_INFO_FAILURE:
-      return {
-        ...state,
-        error: action.payload.error,
-        isLoading: false
-      };
-    default: {
-      return state;
-    }
-  }
-}
+export const authenticationReducer = createReducer(
+  initialState,
+  on(
+    AuthenticationStoreActions.createAccount,
+    AuthenticationStoreActions.login,
+    AuthenticationStoreActions.restoreAuthenticationState,
+    AuthenticationStoreActions.updateUser,
+    AuthenticationStoreActions.loadUserInfo,
+    (state) => ({
+      ...state,
+      error: null,
+      isLoading: true
+    })
+  ),
+  on(
+    AuthenticationStoreActions.createAccountFailure,
+    AuthenticationStoreActions.loginFailure,
+    AuthenticationStoreActions.updateUserFailure,
+    AuthenticationStoreActions.loadUserInfoFailure,
+    (state, { error }) => ({
+      ...state,
+      error: error,
+      isLoading: false
+    })
+  ),
+  on(
+    AuthenticationStoreActions.createAccountSuccess,
+    AuthenticationStoreActions.tokenValidationSuccess,
+    (state) => ({
+      ...state,
+      error: null,
+      isLoading: false
+    })
+  ),
+  on(
+    AuthenticationStoreActions.loginSuccess,
+    (state, { auth }) => ({
+      ...state,
+      user: { _id: auth.user_id },
+      accessToken: auth.access_token,
+      error: null,
+      isLoading: false
+    })
+  ),
+  on(
+    AuthenticationStoreActions.restoreAuthenticationStateFailure,
+    AuthenticationStoreActions.logout,
+    (state) => ({
+      ...state,
+      user: null,
+      accessToken: null,
+      error: null,
+      isLoading: false
+    })
+  ),
+  on(
+    AuthenticationStoreActions.restoreAuthenticationStateSuccess,
+    (state, { user, accessToken }) => ({
+      ...state,
+      user: user,
+      accessToken: accessToken,
+      error: null,
+      isLoading: false
+    })
+  ),
+  on(
+    AuthenticationStoreActions.tokenValidationFailure,
+    (state) => ({
+      ...state,
+      accessToken: null
+    })
+  ),
+  on(
+    AuthenticationStoreActions.updateUserSuccess,
+    AuthenticationStoreActions.loadUserInfoSuccess,
+    (state, { user }) => ({
+      ...state,
+      user: user,
+      error: null,
+      isLoading: false
+    })
+  )
+);

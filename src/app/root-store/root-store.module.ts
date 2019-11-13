@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer, RouterState } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ItemStoreModule } from './item-store/item-store.module';
 import { AuthenticationStoreModule } from './authentication-store/authentication-store.module';
@@ -17,11 +17,15 @@ import { environment } from '../../environments/environment';
       { runtimeChecks:
         {
           strictStateImmutability: true,
-          strictActionImmutability: true
+          strictActionImmutability: true,
+          strictStateSerializability: true,
+          strictActionSerializability: true,
         }
       }
     ),
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({
+      routerState: RouterState.Minimal,
+    }),
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AuthenticationStoreModule

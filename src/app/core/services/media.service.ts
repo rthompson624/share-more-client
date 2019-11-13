@@ -6,8 +6,8 @@ import { switchMap } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { ConfigService } from '../services/config.service';
 
-const IMAGE_PROFILE_BLANK: string = 'profile-blank.png';
-const IMAGE_BLANK: string = 'image-blank.png';
+const IMAGE_PROFILE_BLANK = 'profile-blank.png';
+const IMAGE_BLANK = 'image-blank.png';
 
 @Injectable({
   providedIn: CoreModule
@@ -22,12 +22,15 @@ export class MediaService {
 
   getProfileImageUrl(userId: string, imageFileName: string): Observable<SafeUrl> {
     if (!imageFileName) {
-      let file = IMAGE_PROFILE_BLANK;
+      const file = IMAGE_PROFILE_BLANK;
       return of(this.sanitizer.bypassSecurityTrustUrl('/assets/graphics/' + file));
     } else {
       return this.configService.getConfig().pipe(
         switchMap(config => {
-          return of(this.sanitizer.bypassSecurityTrustUrl('https://' + config.awsBucket + '.s3.' + config.awsRegion + '.amazonaws.com' + '/' + config.environment + '/' + 'users' + '/' + userId + '/' + imageFileName));
+          const base = `https://${config.awsBucket}.s3.${config.awsRegion}.amazonaws.com`;
+          const path = `/${config.environment}/users/${userId}/${imageFileName}`;
+          const url = base + path;
+          return of(this.sanitizer.bypassSecurityTrustUrl(url));
         })
       );
     }
@@ -35,12 +38,15 @@ export class MediaService {
 
   getItemImageUrl(imageFileName: string): Observable<SafeUrl> {
     if (!imageFileName) {
-      let file = IMAGE_BLANK;
+      const file = IMAGE_BLANK;
       return of(this.sanitizer.bypassSecurityTrustUrl('/assets/graphics/' + file));
     } else {
       return this.configService.getConfig().pipe(
         switchMap(config => {
-          return of(this.sanitizer.bypassSecurityTrustUrl('https://' + config.awsBucket + '.s3.' + config.awsRegion + '.amazonaws.com' + '/' + config.environment + '/' + 'items' + '/' + imageFileName));
+          const base = `https://${config.awsBucket}.s3.${config.awsRegion}.amazonaws.com`;
+          const path = `/${config.environment}/items/${imageFileName}`;
+          const url = base + path;
+          return of(this.sanitizer.bypassSecurityTrustUrl(url));
         })
       );
     }

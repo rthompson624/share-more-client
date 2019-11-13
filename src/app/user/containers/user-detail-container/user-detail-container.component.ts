@@ -24,7 +24,7 @@ export class UserDetailContainerComponent implements OnInit {
   }
 
   updateUser(user: User): void {
-    this.store$.dispatch(new AuthenticationStoreActions.UpdateUserRequestAction(user));
+    this.store$.dispatch(AuthenticationStoreActions.updateUser({ user: user }));
   }
 
 }

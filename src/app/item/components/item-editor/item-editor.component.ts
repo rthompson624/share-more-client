@@ -1,11 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy,
+  ViewChild, ElementRef, ChangeDetectorRef
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { FileUploadService } from '../../../core/services/file-upload.service';
-import { MediaService } from '../../../core/services/media.service'
+import { MediaService } from '../../../core/services/media.service';
 import { Item } from '../../../core/models/item.model';
 
 @Component({
@@ -19,7 +22,7 @@ export class ItemEditorComponent implements OnInit {
   @Output() itemSave = new EventEmitter<Item>();
   itemForm: FormGroup;
   @ViewChild('fileControl', { static: false }) fileControl: ElementRef;
-  isUploading: boolean = false;
+  isUploading = false;
   imgUrl: Observable<SafeUrl>;
   uploadError: string;
 
@@ -32,6 +35,7 @@ export class ItemEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.item = JSON.parse(JSON.stringify(this.item)); // Object is read-only coming from store
     this.buildForm();
     if (this.item.picUrl) {
       this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
@@ -80,8 +84,13 @@ export class ItemEditorComponent implements OnInit {
     if (error.error && error.error.message) {
       return error.error.message;
     }
-    if (error && error.message) return error.message;
-    if (error) return error;
+    if (error && error.message) {
+      return error.message;
+    }
+    if (error) {
+      return error;
+    }
+    return null;
   }
 
 }

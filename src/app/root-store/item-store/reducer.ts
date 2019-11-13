@@ -1,104 +1,56 @@
-import { Actions, ActionTypes } from './actions';
-import { featureAdapter, initialState, State } from './state';
+import { createReducer, on } from '@ngrx/store';
+import { featureAdapter, initialState } from './state';
+import * as ItemStoreActions from './actions';
 
-export function itemReducer(state = initialState, action: Actions): State {
-  switch (action.type) {
-    case ActionTypes.LOAD_MANY: {
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-    }
-    case ActionTypes.LOAD_MANY_SUCCESS: {
-      return featureAdapter.addAll(action.payload.data, {
-        ...state,
-        page: {
-          total: action.payload.total,
-          limit: action.payload.limit,
-          skip: action.payload.skip
-        },
-        isLoading: false,
-        error: null
-      });
-    }
-    case ActionTypes.LOAD_ONE: {
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-    }
-    case ActionTypes.LOAD_ONE_SUCCESS: {
-      return featureAdapter.addOne(action.payload, {
-        ...state,
-        isLoading: false,
-        error: null
-      });
-    }
-    case ActionTypes.DELETE: {
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-    }
-    case ActionTypes.DELETE_SUCCESS: {
-      return featureAdapter.removeOne(action.payload._id, {
-        ...state,
-        isLoading: false,
-        error: null
-      });
-    }
-    case ActionTypes.UPDATE: {
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-    }
-    case ActionTypes.UPDATE_SUCCESS: {
-      return featureAdapter.updateOne(
-        {
-          id: action.payload._id,
-          changes: action.payload
-        },
-        {
-        ...state,
-        isLoading: false,
-        error: null
-        }
-      );
-    }
-    case ActionTypes.CREATE: {
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-    }
-    case ActionTypes.CREATE_SUCCESS: {
-      return featureAdapter.addOne(action.payload, {
-        ...state,
-        isLoading: false,
-        error: null
-      });
-    }
-    case ActionTypes.FAILURE: {
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload.error
-      };
-    }
-    case ActionTypes.SELECT_ONE: {
-      return {
-        ...state,
-        selectedItem: action.payload
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-}
+export const itemReducer = createReducer(
+  initialState,
+  on(
+    ItemStoreActions.loadMany,
+    ItemStoreActions.loadOne,
+    ItemStoreActions.deleteOne,
+    ItemStoreActions.updateOne,
+    ItemStoreActions.createOne,
+    (state) => ({
+      ...state,
+      isLoading: true,
+      error: null
+    })
+  ),
+  on(ItemStoreActions.failureAction, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error: error
+  })),
+  on(ItemStoreActions.selectOne, (state, { item }) => ({
+    ...state,
+    selectedItem: item
+  })),
+  on(ItemStoreActions.loadManySuccess, (state, { page }) => featureAdapter.addAll(page.data, {
+    ...state,
+    page: {
+      total: page.total,
+      limit: page.limit,
+      skip: page.skip
+    },
+    isLoading: false,
+    error: null
+  })),
+  on(ItemStoreActions.loadOneSuccess,
+    ItemStoreActions.createOneSuccess,
+    (state, { item }) => featureAdapter.addOne(item, {
+      ...state,
+      isLoading: false,
+      error: null
+    })
+  ),
+  on(ItemStoreActions.deleteOneSuccess, (state, { item }) => featureAdapter.removeOne(item._id, {
+    ...state,
+    isLoading: false,
+    error: null
+  })),
+  on(ItemStoreActions.updateOneSuccess, (state, { item }) => featureAdapter.updateOne({ id: item._id, changes: item }, {
+    ...state,
+    isLoading: false,
+    error: null
+  }))
+);

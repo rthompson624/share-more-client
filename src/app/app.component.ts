@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.configService.loadData();
-    this.store$.dispatch(new AuthenticationStoreActions.RestoreAuthenticationStateRequestAction());
+    this.store$.dispatch(AuthenticationStoreActions.restoreAuthenticationState());
   }
 
 }

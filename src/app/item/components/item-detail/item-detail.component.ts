@@ -49,7 +49,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       if (data) {
         this.deleteItem.emit(this.item);
       }
-    });    
+    });
   }
 
 }

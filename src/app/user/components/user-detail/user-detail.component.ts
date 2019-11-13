@@ -43,7 +43,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (data) {
         this.updateItem.emit(<User>data);
       }
-    });    
+    });
   }
 
 }

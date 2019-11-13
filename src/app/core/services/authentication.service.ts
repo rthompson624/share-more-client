@@ -13,7 +13,7 @@ import { ConfigService } from '../services/config.service';
   providedIn: CoreModule
 })
 export class AuthenticationService {
-  private apiEndpoint: string = 'auth/login';
+  private apiEndpoint = 'auth/login';
 
   constructor(
     private httpClient: HttpClient,
@@ -69,7 +69,7 @@ export class AuthenticationService {
       // No support for LocalStorage
     }
   }
-  
+
   private deleteInLocalStorage(key: string): void {
     if (typeof(Storage) !== 'undefined') {
       // Browser supports local storage
@@ -78,7 +78,7 @@ export class AuthenticationService {
       // No support for local storage
     }
   }
-  
+
   private retrieveInLocalStorage(key: string): string {
     if (typeof(Storage) !== 'undefined') {
       // Browser supports local storage

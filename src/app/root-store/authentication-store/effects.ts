@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
-import { Observable, of as observableOf } from 'rxjs';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { AuthRequest } from '../../core/models/auth-request.model';
-import { AuthResponse } from '../../core/models/auth-response.model';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user.model';
 import * as featureActions from './actions';
@@ -24,94 +22,65 @@ export class AuthenticationStoreEffects {
     private store$: Store<RootStoreState.State>
   ) {}
 
-  @Effect()
-  createAccountRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.CreateAccountRequestAction>(
-      featureActions.ActionTypes.CREATE_ACCOUNT_REQUEST
-    ),
+  createAccount$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.createAccount),
     switchMap(action => {
-      const user: User = {
-        email: action.payload.email,
-        password: action.payload.password
-      };
-      return this.userService.create(user).pipe(
-        map(user => new featureActions.CreateAccountSuccessAction(user)),
+      return this.userService.create(action.user).pipe(
+        map(user => featureActions.createAccountSuccess({ user: user })),
         catchError(error => {
-          return observableOf(new featureActions.CreateAccountFailureAction({ error: this.formatError(error) }));
+          return of(featureActions.createAccountFailure({ error: this.formatError(error) }));
         })
-	    );
+      );
     })
-  );
+  ));
 
-  @Effect()
-  loginRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LoginRequestAction>(
-      featureActions.ActionTypes.LOGIN_REQUEST
-    ),
+  login$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.login),
     switchMap(action => {
-      const authReq: AuthRequest = {
-        username: action.payload.email,
-        password: action.payload.password
-      };
-      return this.authService.authenticateUser(authReq).pipe(
-        map(authRes => new featureActions.LoginSuccessAction(authRes)),
+      return this.authService.authenticateUser(action.auth).pipe(
+        map(authRes => featureActions.loginSuccess({auth: authRes})),
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Unknown error occurred during authentication';
-          if (error.status === 401 && error.statusText === 'Unauthorized') errorMessage = 'Login credentials not recognized'
-          return observableOf(new featureActions.LoginFailureAction({ error: errorMessage }));
+          if (error.status === 401 && error.statusText === 'Unauthorized') {
+            errorMessage = 'Login credentials not recognized';
+          }
+          return of(featureActions.loginFailure({ error: errorMessage }));
         })
-	    );
+      );
     })
-  );
+  ));
 
-  @Effect()
-  loginSuccessEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LoginSuccessAction>(
-      featureActions.ActionTypes.LOGIN_SUCCESS
-    ),
+  loginSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.loginSuccess),
     switchMap(action => {
       return this.router.navigate(['/'])
-      .then(() => new featureActions.LoadUserInfoRequestAction(action.payload))
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
+      .then(() => featureActions.loadUserInfo({ auth: action.auth }));
     })
-  );
+  ));
 
-  @Effect()
-  loadUserInfoRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LoadUserInfoRequestAction>(
-      featureActions.ActionTypes.LOAD_USER_INFO_REQUEST
-    ),
-    switchMap(action => 
-      this.userService.getOne(action.payload.user_id).pipe(
+  loadUserInfo$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.loadUserInfo),
+    switchMap(action =>
+      this.userService.getOne(action.auth.user_id).pipe(
         tap(user => this.authService.updateUserInLocalStorage(user)),
-        map(user => new featureActions.LoadUserInfoSuccessAction(user)),
+        map(user => featureActions.loadUserInfoSuccess({ user: user })),
         catchError(error => {
-          return observableOf(new featureActions.LoadUserInfoFailureAction({ error: this.formatError(error) }));
+          return of(featureActions.loadUserInfoFailure({ error: this.formatError(error) }));
         })
       )
     )
-  );
+  ));
 
-  @Effect()
-  logoutRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.LogoutRequestAction>(
-      featureActions.ActionTypes.LOGOUT_REQUEST
-    ),
-    switchMap(() => {
-      return this.router.navigate(['/', 'authentication', 'login'])
-      .then(() => {
-        this.authService.logoutUser();
-        return new featureActions.LogoutSuccessAction();
-      })
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
+  logout$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.logout),
+    tap(() => {
+      this.authService.logoutUser();
+      this.router.navigate(['/', 'authentication', 'login']);
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  restoreAuthenticationStateRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.RestoreAuthenticationStateRequestAction>(
-      featureActions.ActionTypes.RESTORE_AUTHENTICATION_STATE_REQUEST
-    ),
+  restoreAuthenticationState$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.restoreAuthenticationState),
     withLatestFrom(this.store$),
     switchMap(([action, store]) => {
       // Check store before reloading from authService
@@ -125,72 +94,56 @@ export class AuthenticationStoreEffects {
           user = this.authService.getUser();
           accessToken = this.authService.getAccessToken();
         } else {
-          throw 'user not authenticated';
+          throw Error('user not authenticated');
         }
       }
-      return observableOf(new featureActions.RestoreAuthenticationStateSuccessAction({ user: user, accessToken: accessToken }));
+      return of(featureActions.restoreAuthenticationStateSuccess({ user: user, accessToken: accessToken }));
     }),
-    catchError(() => observableOf(new featureActions.RestoreAuthenticationStateFailureAction()))
-  );
+    catchError(() => of(featureActions.restoreAuthenticationStateFailure()))
+  ));
 
-  @Effect()
-  restoreAuthenticationStateSuccessEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.RestoreAuthenticationStateSuccessAction>(
-      featureActions.ActionTypes.RESTORE_AUTHENTICATION_STATE_SUCCESS
-    ),
-    switchMap(action => 
+  restoreAuthenticationStateSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.restoreAuthenticationStateSuccess),
+    switchMap(action =>
       // Verify token is still valid by attempting an API call
-      this.userService.getOne(action.payload.user._id).pipe(
-        map(() => new featureActions.TokenValidationSuccessAction()),
+      this.userService.getOne(action.user._id).pipe(
+        map(() => featureActions.tokenValidationSuccess()),
         catchError(() => {
           this.authService.logoutUser();
-          return observableOf(new featureActions.TokenValidationFailureAction());
+          return of(featureActions.tokenValidationFailure());
         })
       )
     )
-  );
+  ));
 
-  @Effect()
-  restoreAuthenticationStateFailureEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.RestoreAuthenticationStateFailureAction>(
-      featureActions.ActionTypes.RESTORE_AUTHENTICATION_STATE_FAILURE
-    ),
-    switchMap(() => {
-      return this.router.navigate(['/', 'authentication', 'login'])
-      .then(() => new featureActions.RouteNavigationAction())
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
+  restoreAuthenticationStateFailure$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.restoreAuthenticationStateFailure),
+    tap(() => {
+      this.router.navigate(['/', 'authentication', 'login']);
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  tokenValidationFailureEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.TokenValidationFailureAction>(
-      featureActions.ActionTypes.TOKEN_VALIDATION_FAILURE
-    ),
-    switchMap(() => {
-      return this.router.navigate(['/', 'authentication', 'login'])
-      .then(() => new featureActions.RouteNavigationAction())
-      .catch(error => new featureActions.FailureAction({ error: this.formatError(error) }));
+  tokenValidationFailure$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.tokenValidationFailure),
+    tap(() => {
+      this.router.navigate(['/', 'authentication', 'login']);
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  updateUserEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<featureActions.UpdateUserRequestAction>(
-      featureActions.ActionTypes.UPDATE_USER_REQUEST
-    ),
+  updateUserEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(featureActions.updateUser),
     switchMap(action =>
-      this.userService.update(action.payload).pipe(
-        map(response => {
-          this.authService.updateUserInLocalStorage(response);
-          return new featureActions.UpdateUserSuccessAction(response);
+      this.userService.update(action.user).pipe(
+        map(user => {
+          this.authService.updateUserInLocalStorage(user);
+          return featureActions.updateUserSuccess({ user: user });
         }),
         catchError(error =>
-          observableOf(new featureActions.UpdateUserFailureAction({ error: this.formatError(error) }))
+          of(featureActions.updateUserFailure({ error: this.formatError(error) }))
         )
       )
     )
-  );
+  ));
 
   private formatError(error: any): string {
     if (error.error && error.error.errors && error.error.errors.length) {
@@ -204,8 +157,12 @@ export class AuthenticationStoreEffects {
     if (error.error && error.error.message) {
       return error.error.message;
     }
-    if (error.error) return error.error.toString();
-    if (error) return error.toString();
+    if (error.error) {
+      return error.error.toString();
+    }
+    if (error) {
+      return error.toString();
+    }
   }
 
 }

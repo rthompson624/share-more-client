@@ -1,12 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 import { ItemDeleteDialogComponent } from '../item-delete-dialog/item-delete-dialog.component';
-import { DateService } from '../../../core/services/date.service';
-import { MediaService } from '../../../core/services/media.service';
+import { DateService } from 'src/app/core/services/date.service';
+import { MediaService } from 'src/app/core/services/media.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -14,11 +12,11 @@ import { MediaService } from '../../../core/services/media.service';
   templateUrl: './item-detail.component.html',
   styleUrls: ['./item-detail.component.css']
 })
-export class ItemDetailComponent implements OnInit, OnDestroy {
+export class ItemDetailComponent implements OnInit {
   @Input() item: Item;
   @Output() editItem = new EventEmitter<Item>();
   @Output() deleteItem = new EventEmitter<Item>();
-  private ngUnsubscribe = new Subject<boolean>();
+  @Output() navigateToList = new EventEmitter<void>();
 
   constructor(
     private dialog: MatDialog,
@@ -28,11 +26,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next(true);
-    this.ngUnsubscribe.complete();
   }
 
   onClickEdit(): void {
@@ -45,7 +38,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.data = this.item;
     const dialogRef = this.dialog.open(ItemDeleteDialogComponent, dialogConfig);
-    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+    dialogRef.afterClosed().subscribe(data => {
       if (data) {
         this.deleteItem.emit(this.item);
       }

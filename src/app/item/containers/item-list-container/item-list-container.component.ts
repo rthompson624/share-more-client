@@ -4,9 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 import { RootStoreState, ItemStoreActions, ItemStoreSelectors } from '../../../root-store';
-import { Page } from '../../../core/models/page.model';
+import { Page } from 'src/app/core/models/page.model';
 
 @Component({
   selector: 'app-item-list-container',
@@ -33,7 +33,6 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   selectItem(item: Item): void {
-    this.store$.dispatch(ItemStoreActions.selectOne({ item: item }));
     this.router.navigate([item._id], {relativeTo: this.route});
   }
 

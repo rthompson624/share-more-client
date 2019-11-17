@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Item } from '../../../core/models/item.model';
-import { Page } from '../../../core/models/page.model';
+import { Item } from 'src/app/core/models/item.model';
+import { Page } from 'src/app/core/models/page.model';
 
 @Component({
   selector: 'app-item-list',

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 import { RootStoreState, ItemStoreActions } from '../../../root-store';
 
 @Component({

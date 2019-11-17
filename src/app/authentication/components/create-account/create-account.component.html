@@ -1,20 +1,18 @@
-<app-main-layout>
-  <div class="page-bar-title">Create Account</div>
-  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Email" formControlName="email" width="100%">
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-      <input type="password" matInput placeholder="Password" formControlName="password">
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-      <input type="password" matInput placeholder="Re-enter password" formControlName="passwordEnterAgain">
-    </mat-form-field>
-    <br />
-    <div class="row">
-      <button type="submit" [disabled]="!accountForm.valid" mat-raised-button color="primary">Submit</button>
-    </div>
-  </form>  
-</app-main-layout>
+<div class="page-bar-title">Create Account</div>
+<form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput placeholder="Email" formControlName="email" width="100%">
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <input type="password" matInput placeholder="Password" formControlName="password">
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <input type="password" matInput placeholder="Re-enter password" formControlName="passwordEnterAgain">
+  </mat-form-field>
+  <br />
+  <div class="row">
+    <button type="submit" [disabled]="!accountForm.valid" mat-raised-button color="primary">Submit</button>
+  </div>
+</form>  

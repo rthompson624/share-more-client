@@ -1,0 +1,5 @@
+<cdk-virtual-scroll-viewport [itemSize]="CARD_HEIGHT" class="item-scroll-viewport">
+  <ng-container *cdkVirtualFor="let item of dataSource">
+    <app-item-card [item]="item" [owner]="user$ | async" (showDetail)="showDetails(item)"></app-item-card>
+  </ng-container>
+</cdk-virtual-scroll-viewport>

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 import { RootStoreState, ItemStoreActions, ItemStoreSelectors } from '../../../root-store';
 
 @Component({

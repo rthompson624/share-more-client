@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { User } from '../../core/models/user.model';
+import { User } from 'src/app/core/models/user.model';
 import { State } from './state';
 
 const getError = (state: State): string => state.error;

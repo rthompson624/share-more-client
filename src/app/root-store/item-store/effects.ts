@@ -5,9 +5,10 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { ItemService } from '../../core/services/item.service';
+import { ItemService } from 'src/app/core/services/item.service';
+import { Item } from 'src/app/core/models/item.model';
 import * as featureActions from './actions';
-import { RootStoreState } from '..';
+import { RootStoreState } from '../';
 
 @Injectable()
 export class ItemStoreEffects {
@@ -98,8 +99,9 @@ export class ItemStoreEffects {
     ofType(featureActions.createOne),
     withLatestFrom(this.store$),
     switchMap(([action, store])  => {
-      action.item.ownerId = store.authentication.user._id;
-      return this.dataService.create(action.item).pipe(
+      const newItem: Item = JSON.parse(JSON.stringify(action.item));
+      newItem.ownerId = store.authentication.user._id;
+      return this.dataService.create(newItem).pipe(
         map(item =>
           featureActions.createOneSuccess({ item: item })
         ),
@@ -112,7 +114,7 @@ export class ItemStoreEffects {
 
   createOneSuccess$ = createEffect(() => this.actions$.pipe(
     ofType(featureActions.createOneSuccess),
-    tap(action => this.router.navigate(['/items', action.item._id]))
+    tap(action => this.router.navigate(['/items']))
   ), { dispatch: false });
 
   failureEffect$ = createEffect(() => this.actions$.pipe(

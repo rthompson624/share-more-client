@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 import { RootStoreState, ItemStoreActions, ItemStoreSelectors } from '../../../root-store';
 
 @Component({
@@ -38,6 +38,10 @@ export class ItemDetailContainerComponent implements OnInit {
 
   deleteItem(item: Item): void {
     this.store$.dispatch(ItemStoreActions.deleteOne({ item: item }));
+  }
+
+  navigateToList(): void {
+    this.router.navigate(['/', 'items']);
   }
 
 }

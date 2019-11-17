@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthResponse } from '../../core/models/auth-response.model';
-import { AuthRequest } from '../../core/models/auth-request.model';
-import { User } from '../../core/models/user.model';
+import { AuthResponse } from 'src/app/core/models/auth-response.model';
+import { AuthRequest } from 'src/app/core/models/auth-request.model';
+import { User } from 'src/app/core/models/user.model';
 
 export const createAccount = createAction(
   '[Authentication] Create account',

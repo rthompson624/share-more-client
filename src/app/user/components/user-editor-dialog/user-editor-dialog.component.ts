@@ -5,9 +5,9 @@ import { SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { FileUploadService } from '../../../core/services/file-upload.service';
-import { MediaService } from '../../../core/services/media.service';
-import { User } from '../../../core/models/user.model';
+import { FileUploadService } from 'src/app/core/services/file-upload.service';
+import { MediaService } from 'src/app/core/services/media.service';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-user-editor-dialog',

@@ -7,9 +7,9 @@ import { SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { FileUploadService } from '../../../core/services/file-upload.service';
-import { MediaService } from '../../../core/services/media.service';
-import { Item } from '../../../core/models/item.model';
+import { FileUploadService } from 'src/app/core/services/file-upload.service';
+import { MediaService } from 'src/app/core/services/media.service';
+import { Item } from 'src/app/core/models/item.model';
 
 @Component({
   selector: 'app-item-editor',

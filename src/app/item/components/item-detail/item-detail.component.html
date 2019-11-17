@@ -8,6 +8,7 @@
   </div>
   <div class="item-container">
     <div class="item-description">{{ item.description }}</div>
-    <img mat-card-image [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
+    <img [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
   </div>
+  <button mat-button color="primary" (click)="navigateToList.emit()">BACK TO LIST</button>
 </ng-container>

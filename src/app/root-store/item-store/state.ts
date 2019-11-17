@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Item } from '../../core/models/item.model';
-import { Page } from '../../core/models/page.model';
+import { Item } from 'src/app/core/models/item.model';
+import { Page } from 'src/app/core/models/page.model';
 
 export const featureAdapter: EntityAdapter<Item> = createEntityAdapter<Item>({
   selectId: model => model._id,

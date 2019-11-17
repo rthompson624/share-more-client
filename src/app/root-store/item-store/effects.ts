@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { ItemService } from '../../core/services/item.service';
-import { Item } from '../../core/models/item.model';
+import { ItemService } from 'src/app/core/services/item.service';
+import { Item } from 'src/app/core/models/item.model';
 import * as featureActions from './actions';
 import { RootStoreState } from '../';
 

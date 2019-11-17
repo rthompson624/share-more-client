@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Item } from '../../../core/models/item.model';
+import { Item } from 'src/app/core/models/item.model';
 
 @Component({
   selector: 'app-item-delete-dialog',

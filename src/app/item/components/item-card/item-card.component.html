@@ -4,9 +4,9 @@
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>{{ item.description }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image [src]="mediaService.getItemImageUrl(item.picUrl) | async" alt="Photo of item">
+  <img mat-card-image [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
   <mat-card-content>
-    <p>{{ item.description }}</p>
+    <!-- <p>{{ item.description }}</p> -->
   </mat-card-content>
   <mat-card-actions>
     <button mat-button color="primary" (click)="showDetail.emit()">DETAILS</button>

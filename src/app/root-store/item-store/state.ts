@@ -14,15 +14,17 @@ export interface State extends EntityState<Item> {
   isLoading?: boolean;
   error?: any;
   selectedItem?: Item;
+  listScrollPosition?: number;
 }
 
 export const initialState: State = featureAdapter.getInitialState({
   page: {
     total: null,
     limit: null,
-    skip: 0
+    skip: null
   },
   isLoading: false,
   error: null,
-  selectedItem: null
+  selectedItem: null,
+  listScrollPosition: null
 });

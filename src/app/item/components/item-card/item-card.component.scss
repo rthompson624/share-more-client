@@ -4,6 +4,13 @@
 }
 
 .example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
+}
+
+.item-image {
+  height: 200px;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

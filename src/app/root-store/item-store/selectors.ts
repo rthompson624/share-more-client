@@ -7,6 +7,7 @@ export const getPage = (state: State): Page => state.page;
 export const getError = (state: State): any => state.error;
 export const getIsLoading = (state: State): boolean => state.isLoading;
 export const getSelectedItem = (state: State): Item => state.selectedItem;
+export const getListScrollPosition = (state: State): number => state.listScrollPosition;
 
 // Parameter (case-sensitive) in createFeatureSelector() must match parameter in StoreModule.forFeature() call in xxxxx-store.module.ts
 export const selectItemState: MemoizedSelector<object, State> = createFeatureSelector<State>('item');
@@ -25,3 +26,4 @@ export const selectItemPage: MemoizedSelector<object, Page> = createSelector(sel
 export const selectItemError: MemoizedSelector<object, any> = createSelector(selectItemState, getError);
 export const selectItemIsLoading: MemoizedSelector<object, boolean> = createSelector(selectItemState, getIsLoading);
 export const selectItemSelected: MemoizedSelector<object, Item> = createSelector(selectItemState, getSelectedItem);
+export const selectListScrollPosition: MemoizedSelector<object, number> = createSelector(selectItemState, getListScrollPosition);

@@ -25,7 +25,7 @@ export const itemReducer = createReducer(
     ...state,
     selectedItem: item
   })),
-  on(ItemStoreActions.loadManySuccess, (state, { page }) => featureAdapter.addAll(page.data, {
+  on(ItemStoreActions.loadManySuccess, (state, { page }) => featureAdapter.addMany(page.data, {
     ...state,
     page: {
       total: page.total,
@@ -52,5 +52,9 @@ export const itemReducer = createReducer(
     ...state,
     isLoading: false,
     error: null
+  })),
+  on(ItemStoreActions.saveListScrollPosition, (state, { listScrollPosition }) => ({
+    ...state,
+    listScrollPosition: listScrollPosition
   }))
 );

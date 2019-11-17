@@ -61,3 +61,8 @@ export const selectOne = createAction(
   '[Item] Select one',
   props<{ item: Item }>()
 );
+
+export const saveListScrollPosition = createAction(
+  '[Item] Save list scroll position',
+  props<{ listScrollPosition: number }>()
+);

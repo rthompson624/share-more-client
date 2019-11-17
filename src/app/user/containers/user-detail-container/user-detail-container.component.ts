@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { RootStoreState, AuthenticationStoreSelectors, AuthenticationStoreActions } from '../../../root-store';
-import { User } from '../../../core/models/user.model';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-user-detail-container',

@@ -1,0 +1,14 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <img mat-card-avatar [src]="mediaService.getProfileImageUrl(owner._id, owner.avatarUrl) | async">
+    <mat-card-title>{{ item.name }}</mat-card-title>
+    <mat-card-subtitle>{{ item.description }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
+  <mat-card-content>
+    <!-- <p>{{ item.description }}</p> -->
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="showDetail.emit()">DETAILS</button>
+  </mat-card-actions>
+</mat-card>

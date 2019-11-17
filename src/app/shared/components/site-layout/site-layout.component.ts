@@ -7,7 +7,7 @@ import { RootStoreState, RootStoreSelectors, AuthenticationStoreActions, Authent
 @Component({
   selector: 'app-site-layout',
   templateUrl: 'site-layout.component.html',
-  styleUrls: ['site-layout.component.scss'],
+  styleUrls: ['site-layout.component.scss']
 })
 export class SiteLayoutComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;

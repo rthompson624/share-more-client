@@ -55,7 +55,6 @@ export class ItemService {
       params = new HttpParams()
         .set('$skip', skip.toString(10))
         .set('$limit', this.pageSize.toString(10))
-        .set('$sort[startDate]', '-1')
         .set('creatorId', String(creatorId));
     } else {
       params = new HttpParams()

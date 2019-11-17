@@ -14,3 +14,7 @@ a:hover {
 mat-icon {
   font-size: 36px;
 }
+
+mat-dialog-actions button+button {
+  margin-left: 10px;
+}

@@ -4,8 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { UserEditorDialogComponent } from '../user-editor-dialog/user-editor-dialog.component';
-import { User } from '../../../core/models/user.model';
-import { MediaService } from '../../../core/services/media.service';
+import { User } from 'src/app/core/models/user.model';
+import { MediaService } from 'src/app/core/services/media.service';
 
 @Component({
   selector: 'app-user-detail',

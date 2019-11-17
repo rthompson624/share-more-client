@@ -6,9 +6,9 @@ import { catchError, map, switchMap, withLatestFrom, tap } from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { UserService } from '../../core/services/user.service';
-import { User } from '../../core/models/user.model';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { User } from 'src/app/core/models/user.model';
 import * as featureActions from './actions';
 import { RootStoreState } from '../../root-store';
 

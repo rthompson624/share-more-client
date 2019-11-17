@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Item } from '../../core/models/item.model';
-import { ApiPage } from '../../core/models/api-page.model';
+import { Item } from 'src/app/core/models/item.model';
+import { ApiPage } from 'src/app/core/models/api-page.model';
 
 export const loadMany = createAction(
   '[Item] Load many',
@@ -60,4 +60,9 @@ export const failureAction = createAction(
 export const selectOne = createAction(
   '[Item] Select one',
   props<{ item: Item }>()
+);
+
+export const saveListScrollPosition = createAction(
+  '[Item] Save list scroll position',
+  props<{ listScrollPosition: number }>()
 );

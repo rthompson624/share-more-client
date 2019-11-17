@@ -1,0 +1,48 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <span style="margin: 0 0 0 10px;">Share More</span>
+    <span class="example-spacer"></span>
+    <mat-icon *ngIf="accessToken$ | async" routerLink="/users" class="example-icon-right">person</mat-icon>
+    <mat-icon *ngIf="accessToken$ | async" (click)="onLogout()" class="example-icon-right-last">power_settings_new</mat-icon>
+    <mat-icon *ngIf="!(accessToken$ | async)" routerLink="/authentication/login" class="example-icon-right-last">power_settings_new</mat-icon>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav mode="over" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list>
+        <ng-container *ngIf="accessToken$ | async">
+          <a mat-list-item (click)="snav.close()" routerLink="/">
+            <mat-icon matListIcon class="nav-list-icon">home</mat-icon>
+            Home
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item (click)="snav.close()" routerLink="/items">
+            <mat-icon matListIcon class="nav-list-icon">category</mat-icon>
+            My Items
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item (click)="snav.close();onLogout()">
+            <mat-icon matListIcon class="nav-list-icon">power_settings_new</mat-icon>
+            Logout
+          </a>
+        </ng-container>
+        <ng-container *ngIf="!(accessToken$ | async)">
+          <a (click)="snav.close()" routerLink="/authentication/login" mat-list-item>
+            <mat-icon matListIcon class="nav-list-icon">power_settings_new</mat-icon>
+            Login
+          </a>
+        </ng-container>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="example-padding">
+      <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+      <div *ngIf="errorMessage$ | async" style="padding-top: 10px;">
+        <mat-chip-list>
+          <mat-chip color="accent" selected>Error</mat-chip>
+        </mat-chip-list>
+        <div class="error-message">{{ errorMessage$ | async }}</div>  
+      </div>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

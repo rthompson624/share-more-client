@@ -1,24 +1,22 @@
-<app-main-layout>
-  <div class="page-bar-title">Login</div>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Email" formControlName="email">
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-      <input type="password" matInput placeholder="Password" formControlName="password">
-    </mat-form-field>
-    <br />
-    <div class="row">
-      <button type="submit" [disabled]="!loginForm.valid" mat-raised-button color="primary">Submit</button>
-    </div>
-  </form>
+<div class="page-bar-title">Login</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput placeholder="Email" formControlName="email">
+  </mat-form-field>
   <br />
-  <div>
-    Don't have an account? <a routerLink="../create" routerLinkActive="active">Click here.</a>
-  </div>
+  <mat-form-field>
+    <input type="password" matInput placeholder="Password" formControlName="password">
+  </mat-form-field>
   <br />
-  <div>
-    Forgot your password? <a routerLink="../forgot-password" routerLinkActive="active">Click here.</a>
+  <div class="row">
+    <button type="submit" [disabled]="!loginForm.valid" mat-raised-button color="primary">Submit</button>
   </div>
-</app-main-layout>
+</form>
+<br />
+<div>
+  Don't have an account? <a routerLink="../create" routerLinkActive="active">Click here.</a>
+</div>
+<br />
+<div>
+  Forgot your password? <a routerLink="../forgot-password" routerLinkActive="active">Click here.</a>
+</div>

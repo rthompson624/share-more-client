@@ -33,7 +33,6 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   selectItem(item: Item): void {
-    this.store$.dispatch(ItemStoreActions.selectOne({ item: item }));
     this.router.navigate([item._id], {relativeTo: this.route});
   }
 

@@ -1,3 +1,10 @@
+<div class="page-bar">
+  <div class="page-bar-title">My Items</div>
+  <div class="page-bar-controls">
+    <i class="material-icons" (click)="createNew()">add</i>
+  </div>
+</div>
+<div class="vertical-spacer"></div>
 <cdk-virtual-scroll-viewport [itemSize]="CARD_HEIGHT" class="item-scroll-viewport">
   <ng-container *cdkVirtualFor="let item of dataSource">
     <app-item-card [item]="item" [owner]="user$ | async" (showDetail)="showDetails(item)"></app-item-card>

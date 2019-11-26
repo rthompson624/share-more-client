@@ -4,12 +4,11 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
-import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-
-import { FileUploadService } from 'src/app/core/services/file-upload.service';
+import { FileUploadService, PicType } from 'src/app/core/services/file-upload.service';
 import { MediaService } from 'src/app/core/services/media.service';
 import { Item } from 'src/app/core/models/item.model';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-editor',
@@ -48,27 +47,15 @@ export class ItemEditorComponent implements OnInit {
     this.itemSave.emit(this.item);
   }
 
-  selectFile(): void {
-    this.fileControl.nativeElement.click();
-  }
-
-  onFileSelected(): void {
+  selectFile() {
     this.isUploading = true;
     this.uploadError = null;
-    const files: FileList = this.fileControl.nativeElement.files;
-    if (files.length > 0) {
-      const file = files[0];
-      this.uploadService.uploadItemPic(file).pipe(take(1)).subscribe(response => {
-        this.item.picUrl = response.file;
-        this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
-        this.isUploading = false;
-        this.changeDetectorRef.detectChanges();
-      }, error => {
-        this.isUploading = false;
-        this.uploadError = this.formatError(error);
-        this.changeDetectorRef.detectChanges();
-      });
-    }
+    this.uploadService.selectImageAndUpload(PicType.ITEM).pipe(take(1)).subscribe(response => {
+      this.item.picUrl = response.file;
+      this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
+      this.isUploading = false;
+      this.changeDetectorRef.detectChanges();
+    }, err => console.log(err));
   }
 
   private buildForm(): void {
@@ -78,19 +65,6 @@ export class ItemEditorComponent implements OnInit {
         description: [this.item.description, [Validators.required]]
       }
     );
-  }
-
-  private formatError(error: any): string {
-    if (error.error && error.error.message) {
-      return error.error.message;
-    }
-    if (error && error.message) {
-      return error.message;
-    }
-    if (error) {
-      return error;
-    }
-    return null;
   }
 
 }

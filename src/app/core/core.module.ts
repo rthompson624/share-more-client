@@ -12,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
       provide: HTTP_INTERCEPTORS,
       useClass: SecurityInterceptor,
       multi: true
-    }
+    },
+    NgxImageCompressService
   ],
   exports: [
   ]
@@ -51,7 +53,9 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: []
+      providers: [
+        NgxImageCompressService
+      ]
     };
   }
 

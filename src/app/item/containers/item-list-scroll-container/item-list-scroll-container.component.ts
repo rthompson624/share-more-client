@@ -73,7 +73,7 @@ export class ItemsDataSource extends DataSource<Item | undefined> {
 export class ItemListScrollContainerComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: ItemsDataSource;
   user$: Observable<User>;
-  CARD_HEIGHT = 361;
+  CARD_HEIGHT = 309;
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollViewport: CdkVirtualScrollViewport;
   scrollPosition: number = null;
@@ -113,12 +113,21 @@ export class ItemListScrollContainerComponent implements OnInit, OnDestroy, Afte
     this.router.navigate([item._id], {relativeTo: this.route});
   }
 
+  createNew(): void {
+    this.router.navigate(['create'], {relativeTo: this.route});
+  }
+
   private _scrollTo(scrollPosition: number) {
     this.scrollViewport.scrollToOffset(scrollPosition);
   }
 
   private _getScrollPosition(): number {
-    return this.scrollViewport.getOffsetToRenderedContentStart() + (this.CARD_HEIGHT * 1.5);
+    const offset = this.scrollViewport.getOffsetToRenderedContentStart();
+    if (offset === 0) {
+      return offset;
+    } else {
+      return offset + (this.CARD_HEIGHT * 0.5);
+    }
   }
 
 }

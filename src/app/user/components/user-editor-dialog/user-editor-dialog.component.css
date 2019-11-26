@@ -3,12 +3,12 @@
 }
 
 a {
-  color: #73C6B6;
+  color: orange;
 }
 
 a:hover {
   cursor: pointer;
-  color: #16A085;
+  color: #3f51b5;
 }
 
 mat-icon {

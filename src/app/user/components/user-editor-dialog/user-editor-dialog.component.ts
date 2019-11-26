@@ -56,22 +56,22 @@ export class UserEditorDialogComponent implements OnInit {
   }
 
   onFileSelected(): void {
-    this.isUploading = true;
-    this.uploadError = null;
-    const files: FileList = this.fileControl.nativeElement.files;
-    if (files.length > 0) {
-      const file = files[0];
-      this.uploadService.uploadProfilePic(file, this.user._id).pipe(take(1)).subscribe(response => {
-        this.user.avatarUrl = response.file;
-        this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
-        this.isUploading = false;
-        this.changeDetectorRef.detectChanges();
-      }, error => {
-        this.isUploading = false;
-        this.uploadError = this.formatError(error);
-        this.changeDetectorRef.detectChanges();
-      });
-    }
+    // this.isUploading = true;
+    // this.uploadError = null;
+    // const files: FileList = this.fileControl.nativeElement.files;
+    // if (files.length > 0) {
+    //   const file = files[0];
+    //   this.uploadService.uploadProfilePic(file, this.user._id).pipe(take(1)).subscribe(response => {
+    //     this.user.avatarUrl = response.file;
+    //     this.imgUrl = this.mediaService.getProfileImageUrl(this.user._id, this.user.avatarUrl);
+    //     this.isUploading = false;
+    //     this.changeDetectorRef.detectChanges();
+    //   }, error => {
+    //     this.isUploading = false;
+    //     this.uploadError = this.formatError(error);
+    //     this.changeDetectorRef.detectChanges();
+    //   });
+    // }
   }
 
   private buildForm(): void {

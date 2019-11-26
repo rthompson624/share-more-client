@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { ItemRoutingModule } from './item-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ItemListContainerComponent } from './containers/item-list-container/item-list-container.component';
@@ -41,6 +42,7 @@ import { ItemCardComponent } from './components/item-card/item-card.component';
     MatProgressSpinnerModule,
     MatTableModule,
     MatCardModule,
+    MatRippleModule,
     ReactiveFormsModule,
     SharedModule,
     MatDialogModule,

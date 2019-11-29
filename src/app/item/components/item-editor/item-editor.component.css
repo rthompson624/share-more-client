@@ -20,3 +20,10 @@ a:hover {
 mat-icon {
   font-size: 36px;
 }
+
+.item-image {
+  margin-top: 5px;
+  height: 300px;
+  width: auto;
+  display: block;
+}

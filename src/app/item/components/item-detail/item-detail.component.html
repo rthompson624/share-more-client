@@ -10,5 +10,6 @@
     <div class="item-description">{{ item.description }}</div>
     <img [src]="mediaService.getItemImageUrl(item.picUrl) | async" class="item-image">
   </div>
+  <br>
   <button mat-button color="primary" (click)="navigateToList.emit()">BACK TO LIST</button>
 </ng-container>

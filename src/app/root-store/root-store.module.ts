@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule, routerReducer, RouterState } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ItemStoreModule } from './item-store/item-store.module';
+import { CommunityItemStoreModule } from './community-item-store/community-item-store.module';
 import { AuthenticationStoreModule } from './authentication-store/authentication-store.module';
 import { environment } from '../../environments/environment';
 
@@ -12,6 +13,7 @@ import { environment } from '../../environments/environment';
   imports: [
     CommonModule,
     ItemStoreModule,
+    CommunityItemStoreModule,
     StoreModule.forRoot(
       { routerReducer: routerReducer },
       { runtimeChecks:

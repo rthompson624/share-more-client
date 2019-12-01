@@ -3,17 +3,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Item } from 'src/app/core/models/item.model';
 import { User } from 'src/app/core/models/user.model';
-import { RootStoreState, AuthenticationStoreSelectors, ItemStoreSelectors, ItemStoreActions } from 'src/app/root-store';
+import { RootStoreState, AuthenticationStoreSelectors, CommunityItemStoreSelectors, CommunityItemStoreActions } from 'src/app/root-store';
 import { Store } from '@ngrx/store';
 import { Page } from 'src/app/core/models/page.model';
 
 @Component({
-  selector: 'app-item-list-scroll-container',
-  templateUrl: './item-list-scroll-container.component.html',
-  styleUrls: ['./item-list-scroll-container.component.scss'],
+  selector: 'app-community-item-list-scroll-container',
+  templateUrl: './community-item-list-scroll-container.component.html',
+  styleUrls: ['./community-item-list-scroll-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemListScrollContainerComponent implements OnInit {
+export class CommunityItemListScrollContainerComponent implements OnInit {
   user$: Observable<User>;
   scrollPosition$: Observable<number>;
   items$: Observable<Item[]>;
@@ -28,9 +28,9 @@ export class ItemListScrollContainerComponent implements OnInit {
 
   ngOnInit() {
     this.user$ = this.store$.select(AuthenticationStoreSelectors.selectUser);
-    this.items$ = this.store$.select(ItemStoreSelectors.selectAllItems);
-    this.page$ = this.store$.select(ItemStoreSelectors.selectItemPage);
-    this.scrollPosition$ = this.store$.select(ItemStoreSelectors.selectListScrollPosition);
+    this.items$ = this.store$.select(CommunityItemStoreSelectors.selectAllItems);
+    this.page$ = this.store$.select(CommunityItemStoreSelectors.selectItemPage);
+    this.scrollPosition$ = this.store$.select(CommunityItemStoreSelectors.selectListScrollPosition);
   }
 
   showDetail(item: Item): void {
@@ -42,11 +42,11 @@ export class ItemListScrollContainerComponent implements OnInit {
   }
 
   saveScrollPosition(scrollPosition: number): void {
-    this.store$.dispatch(ItemStoreActions.saveListScrollPosition({ listScrollPosition: scrollPosition }));
+    this.store$.dispatch(CommunityItemStoreActions.saveListScrollPosition({ listScrollPosition: scrollPosition }));
   }
 
   loadItems(pageIndex: number): void {
-    this.store$.dispatch(ItemStoreActions.loadMany({ pageIndex: pageIndex }));
+    this.store$.dispatch(CommunityItemStoreActions.loadMany({ pageIndex: pageIndex }));
   }
 
 }

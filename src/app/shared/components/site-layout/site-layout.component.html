@@ -16,8 +16,13 @@
             Home
           </a>
           <mat-divider></mat-divider>
+          <a mat-list-item (click)="snav.close()" routerLink="/community-items">
+            <mat-icon matListIcon class="nav-list-icon">people_alt</mat-icon>
+            Community Items
+          </a>
+          <mat-divider></mat-divider>
           <a mat-list-item (click)="snav.close()" routerLink="/items">
-            <mat-icon matListIcon class="nav-list-icon">category</mat-icon>
+            <mat-icon matListIcon class="nav-list-icon">person</mat-icon>
             My Items
           </a>
           <mat-divider></mat-divider>

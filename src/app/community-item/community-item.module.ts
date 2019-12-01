@@ -14,26 +14,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
-import { ItemRoutingModule } from './item-routing.module';
+import { CommunityItemRoutingModule } from './community-item-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { ItemDetailContainerComponent } from './containers/item-detail-container/item-detail-container.component';
-import { ItemCreateContainerComponent } from './containers/item-create-container/item-create-container.component';
-import { ItemEditContainerComponent } from './containers/item-edit-container/item-edit-container.component';
-import { ItemDetailComponent } from './components/item-detail/item-detail.component';
-import { ItemEditorComponent } from './components/item-editor/item-editor.component';
-import { ItemDeleteDialogComponent } from './components/item-delete-dialog/item-delete-dialog.component';
-import { ItemListScrollContainerComponent } from './containers/item-list-scroll-container/item-list-scroll-container.component';
-import { ItemCardComponent } from './components/item-card/item-card.component';
-import { ItemListScrollComponent } from './components/item-list-scroll/item-list-scroll.component';
+import { CommunityItemDetailContainerComponent } from './containers/community-item-detail-container/community-item-detail-container.component';
+import { CommunityItemListScrollContainerComponent } from './containers/community-item-list-scroll-container/community-item-list-scroll-container.component';
+import { CommunityItemCardComponent } from './components/community-item-card/community-item-card.component';
+import { CommunityItemListScrollComponent } from './components/community-item-list-scroll/community-item-list-scroll.component';
+import { CommunityItemDetailComponent } from './components/community-item-detail/community-item-detail.component';
 
 @NgModule({
   entryComponents: [
-    ItemDeleteDialogComponent
   ],
   imports: [
     CommonModule,
     ScrollingModule,
-    ItemRoutingModule,
+    CommunityItemRoutingModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
@@ -50,16 +45,12 @@ import { ItemListScrollComponent } from './components/item-list-scroll/item-list
     MatSelectModule
   ],
   declarations: [
-    ItemDetailComponent,
-    ItemDetailContainerComponent,
-    ItemEditorComponent,
-    ItemCreateContainerComponent,
-    ItemEditContainerComponent,
-    ItemDeleteDialogComponent,
-    ItemListScrollContainerComponent,
-    ItemCardComponent,
-    ItemListScrollComponent
+    CommunityItemDetailComponent,
+    CommunityItemDetailContainerComponent,
+    CommunityItemListScrollComponent,
+    CommunityItemCardComponent,
+    CommunityItemListScrollContainerComponent
   ]
 })
-export class ItemModule {
+export class CommunityItemModule {
 }

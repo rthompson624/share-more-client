@@ -4,12 +4,12 @@ import { MediaService } from 'src/app/core/services/media.service';
 import { User } from 'src/app/core/models/user.model';
 
 @Component({
-  selector: 'app-item-card',
-  templateUrl: './item-card.component.html',
-  styleUrls: ['./item-card.component.scss'],
+  selector: 'app-community-item-card',
+  templateUrl: './community-item-card.component.html',
+  styleUrls: ['./community-item-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemCardComponent implements OnInit {
+export class CommunityItemCardComponent implements OnInit {
   @Input() item: Item;
   @Input() owner: User;
   @Output() showDetail = new EventEmitter<Item>();

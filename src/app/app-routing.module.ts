@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./item/item.module').then(m => m.ItemModule)
   },
   {
+    path: 'community-items',
+    loadChildren: () => import('./community-item/community-item.module').then(m => m.CommunityItemModule)
+  },
+  {
     path: 'users',
     loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },

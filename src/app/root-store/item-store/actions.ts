@@ -13,12 +13,12 @@ export const loadManySuccess = createAction(
 );
 
 export const loadOne = createAction(
-  '[Item] Load',
+  '[Item] Load one',
   props<{ id: string }>()
 );
 
 export const loadOneSuccess = createAction(
-  '[Item] Load (success)',
+  '[Item] Load one (success)',
   props<{ item: Item }>()
 );
 

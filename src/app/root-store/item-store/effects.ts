@@ -32,7 +32,7 @@ export class ItemStoreEffects {
           pageIndex = 0;
         }
       }
-      return this.dataService.getMany(pageIndex, store.authentication.user._id).pipe(
+      return this.dataService.getMany(pageIndex, store.authentication.user._id, 'user').pipe(
         map(page =>
           featureActions.loadManySuccess({ page: page })
         ),

@@ -1,0 +1,4 @@
+export const APP_CONSTANTS = {
+  ITEM_LIST_PAGE_SIZE: 10,
+  ITEM_CARD_HEIGHT: 309
+};

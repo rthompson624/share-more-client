@@ -7,13 +7,14 @@ import { CoreModule } from '../core.module';
 import { ApiPage } from '../models/api-page.model';
 import { Item } from '../models/item.model';
 import { ConfigService } from '../services/config.service';
+import { APP_CONSTANTS } from 'src/app/core/models/constants';
 
 @Injectable({
   providedIn: CoreModule
 })
 export class ItemService {
   private apiEndpoint = 'items';
-  private pageSize = 8;
+  private pageSize = APP_CONSTANTS.ITEM_LIST_PAGE_SIZE;
 
   constructor(
     private httpClient: HttpClient,
@@ -47,20 +48,15 @@ export class ItemService {
     }));
   }
 
-  getMany(pageIndex: number, ownerId?: string): Observable<ApiPage<Item>> {
+  getMany(pageIndex: number, ownerId: string, type: string): Observable<ApiPage<Item>> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const skip = (pageIndex * this.pageSize);
     let params: HttpParams;
-    if (ownerId) {
-      params = new HttpParams()
-        .set('$skip', skip.toString(10))
-        .set('$limit', this.pageSize.toString(10))
-        .set('ownerId', ownerId);
-    } else {
-      params = new HttpParams()
-        .set('$skip', skip.toString(10))
-        .set('$limit', this.pageSize.toString(10));
-    }
+    params = new HttpParams()
+      .set('$skip', skip.toString(10))
+      .set('$limit', this.pageSize.toString(10))
+      .set('ownerId', ownerId)
+      .set('type', type);
     const options = {headers: headers, params: params};
     return this.configService.getConfig().pipe(switchMap(config => {
       return this.httpClient.get<ApiPage<Item>>(config.apiServer + '/' + this.apiEndpoint, options);

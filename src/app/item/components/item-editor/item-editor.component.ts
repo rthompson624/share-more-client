@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy,
-  ViewChild, ElementRef, ChangeDetectorRef
+  ViewChild, ElementRef, ChangeDetectorRef, OnChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
@@ -16,7 +16,7 @@ import { take } from 'rxjs/operators';
   templateUrl: './item-editor.component.html',
   styleUrls: ['./item-editor.component.css']
 })
-export class ItemEditorComponent implements OnInit {
+export class ItemEditorComponent implements OnInit, OnChanges {
   @Input() item: Item;
   @Output() itemSave = new EventEmitter<Item>();
   itemForm: FormGroup;
@@ -34,10 +34,16 @@ export class ItemEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.item = JSON.parse(JSON.stringify(this.item)); // Object is read-only coming from store
-    this.buildForm();
-    if (this.item.picUrl) {
-      this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
+  }
+
+  ngOnChanges() {
+    // Doing this here instead of ngOnInit to handle browser refresh case
+    if (this.item) {
+      this.item = JSON.parse(JSON.stringify(this.item)); // Object is read-only coming from store
+      this.buildForm();
+      if (this.item.picUrl) {
+        this.imgUrl = this.mediaService.getItemImageUrl(this.item.picUrl);
+      }
     }
   }
 

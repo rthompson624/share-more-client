@@ -47,15 +47,15 @@ export class ItemService {
     }));
   }
 
-  getMany(pageIndex: number, creatorId?: string): Observable<ApiPage<Item>> {
+  getMany(pageIndex: number, ownerId?: string): Observable<ApiPage<Item>> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     const skip = (pageIndex * this.pageSize);
     let params: HttpParams;
-    if (creatorId) {
+    if (ownerId) {
       params = new HttpParams()
         .set('$skip', skip.toString(10))
         .set('$limit', this.pageSize.toString(10))
-        .set('creatorId', String(creatorId));
+        .set('ownerId', ownerId);
     } else {
       params = new HttpParams()
         .set('$skip', skip.toString(10))
